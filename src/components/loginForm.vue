@@ -51,6 +51,8 @@ methods: {
         //Sparar token i loclastorage
         sessionStorage.setItem("token", data.jwtToken);
         sessionStorage.setItem("userId", data.payload.userId)
+        sessionStorage.setItem("user", data.payload.name)
+        sessionStorage.setItem("email", data.payload.email)
 
         //Om token finns så skcikas man vidare till /profil 
         if (data.payload.userId && data.jwtToken) {

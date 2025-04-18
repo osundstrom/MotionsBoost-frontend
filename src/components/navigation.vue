@@ -27,93 +27,97 @@ console.log(logo);
 </script>
 
 <template>
-  <v-app>
-    <!-- Navigation Bar -->
-    <v-app-bar app color="#436efdc9" dark>
-
-      <!-- Hamburger -->
-      <v-menu offset-y>
-        <template v-slot:activator="{ props }">
-          <v-btn
-            v-bind="props"
-            icon
-            class="ml-0"
-          >
-            <v-icon><i class="fa-solid fa-bars"></i></v-icon> 
-          </v-btn>
-        </template>
-<!-------------------------------------------------------------------------------------------------- -->
-        <!-- Dropdown Menu-->
-        <v-list list color="#7E9CFF" dark>
-          <v-list-item>
-            <v-list-item-title><RouterLink to="/profil">Min sida</RouterLink></v-list-item-title>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-title><RouterLink to="/create">Skapa grupp</RouterLink></v-list-item-title>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-title>Inställningar</v-list-item-title>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-title>Information</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-<!-------------------------------------------------------------------------------------------------->
-
-      <!-- Logo -->
-      <div class="logoDiv">
-        <img src="@/assets/logomb.png" alt="Logo" />
+  <nav class="navbar custom-navbar fixed-top">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+      
+      <!-- Burger dropdown menu -->
+      <div class="dropdown">
+        <button class="btn text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fa-solid fa-bars fs-2"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-list">
+          <li><RouterLink class="dropdown-item" to="/profil">Min sida</RouterLink></li>
+          <li><RouterLink class="dropdown-item" to="/creategroup">Skapa grupp</RouterLink></li>
+          <li><a class="dropdown-item" href="#">Inställningar</a></li>
+          <li><a class="dropdown-item" href="#">Information</a></li>
+        </ul>
       </div>
-<!-------------------------------------------------------------------------------------------------->
 
-      <!-- Avatar -->
-      <v-menu offset-y>
-        <template v-slot:activator="{ props }">
-          <v-btn
-            v-bind="props"
-            icon
-            class="avatar-btn"
-          >
-            <v-avatar size="40">
-              <img src="@/assets/backgroundlogin.jpg" alt="Avatar">
-            </v-avatar>
-          </v-btn>
-        </template>
-<!-------------------------------------------------------------------------------------------------->
+      <!-- Centered logo -->
+      <img src="../assets/logomb.png" alt="Logo" class="navbar-logo">
 
-        <!-- Dropdown logout-->
-        <v-list>
-          <v-list-item @click="logout" class="btn btn-danger">
-            <v-list-item-title >Logga ut</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-<!-------------------------------------------------------------------------------------------------->
-    </v-app-bar>
+      <!-- Avatar with logout -->
+      <div class="dropdown">
+        <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <img src="../assets/backgroundlogin.jpg" alt="Avatar" class="rounded-circle" width="40" height="40">
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li>
+            <a class="dropdown-item dropdown-logout" @click="logout">Logga ut</a>
+          </li>
+        </ul>
+      </div>
 
-  </v-app>
+    </div>
+  </nav>
 </template>
+  
+  
+  
+  <style scoped>
+  
+  
+  /*-------------------------- dropdown---------------------------------*/
+  
+  
+    .dropdown-menu-end  {
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    overflow: hidden;
+  }
+  
+  .dropdown-logout {
+    padding: 0.5rem 1rem;
+    background-color: rgba(245, 102, 102, 0.726);
+    text-align: center;
+    
+  }
 
-<style scoped>
+  .dropdown-item:hover{
+      text-decoration: underline;
+    }
+  
+  .dropdown-logout:hover {
+    background-color: #f55959;   
+  }
 
-.logoDiv {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  max-height: 20%
+  .dropdown i {
+    color: black;
+  }
+  
+  .dropdown-menu-list{
+    background-color: #436efdc9;
+  }
+  /*--------------------------navbar color---------------------------------*/
+  
+  .custom-navbar{
+      background-color: #436efdc9;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+  
+  /*--------------------------navbar logo---------------------------------*/
+  
+  .navbar-logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 100%;
+  }
 
-}
 
-
-.v-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-  object-fit: cover;
-  object-position: center;
-}
-
-</style>
+ 
+  
+  </style>
