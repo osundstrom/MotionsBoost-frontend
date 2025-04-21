@@ -12,12 +12,14 @@ export default {
       loading: true,
       showGroupCodeBox: false,
       groupCode: "",
+      memberGroups: [],
+      ownedGroups: [],
     };
   },
 
 
   mounted() {
-
+    this.fetchGroups();
     this.fetchTotalSteps();
   },
 
@@ -25,6 +27,7 @@ export default {
   methods: {
     //-------------------------steps fetch--------------------------------------//
     async fetchTotalSteps() {
+      this.loading = true; 
       try {
         const token = sessionStorage.getItem("token");
         const userId = sessionStorage.getItem("userId");
@@ -47,9 +50,7 @@ export default {
       } catch (error) {
         console.error(error);
       }
-      finally {
-        this.loading = false;
-      }
+      
     },
 
 //-------------------------join group--------------------------------------//
@@ -82,13 +83,54 @@ async joinGroup() {
         }
       } catch (error) {
         console.error(error);
-      }finally {
+      }
+    },
+
+    //-------------------------hämta grupper--------------------------------------//
+async fetchGroups() {
+      try {
+        const token = sessionStorage.getItem("token");   
+        const userId = sessionStorage.getItem("userId");
+
+        const response = await fetch("http://localhost:3000/groups/myGroups", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          
+          
+          this.memberGroups = data.groups
+        .filter(item => item.groupRole === "member")
+        .map(item => item.group);
+
+        this.ownedGroups = data.groups
+        .filter(item => item.groupRole === "owner")
+        .map(item => item.group);
+
+        console.log("Member Groups:", this.memberGroups);
+console.log("Owned Groups:", this.ownedGroups);
+          
+        } else {
+          console.error("kunde ej hämta grupper för användaren");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+      finally {
           this.loading = false;
         }
     },
 
   }
 }
+
+
 
 </script>
 
@@ -99,6 +141,13 @@ async joinGroup() {
   <navigation />
   <div class="forContent"></div>
 
+  <div v-if="loading" class="loading-overlay">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <div v-else>
  <!--knapp grupp -->
 <button class="toggle-code-btn btn btn-success" @click="showGroupCodeBox = !showGroupCodeBox">
   <span v-if="!showGroupCodeBox">+</span>
@@ -115,17 +164,17 @@ async joinGroup() {
   <!-- Sektion profil-->
   <div class="sectionOne">
 
-    <div class="container mt-4">
-      <div class="row align-items-center">
+    <div class="container h-100">
+      <div class="row h-100 align-items-center">
         
-          <div class="col-3 text-center">
+          <div class="col-12 col-md-3 d-flex justify-content-center align-items-center" style="height: 80%">
 
             <img src="../assets/backgroundlogin.jpg" class="img-fluid rounded profile-pic" alt="Profil bild">
 
           </div>
 
-          <div class="col-9 col-md-5">
-              <h5 class="card-title d-flex justify-content-between align-items-center">
+          <div class="col-12 col-md-9 userCont">
+              <h5 class="d-flex justify-content-between align-items-center">
                 {{ name }}
 
               </h5>
@@ -152,8 +201,9 @@ async joinGroup() {
 <div class="sectionTwo">
   <div class="mt-4">
         <div class=" p-3 mb-2 text-center">
-          <h6 class="fw-bold">Medlem i grupper</h6>
-          <p v-for="group in memberGroups" :key="group">{{ group }}</p>
+          <h5 class="fw-bold">Medlem i grupper</h5>
+          <p v-if="memberGroups.length === 0">Gå med i några grupper</p>
+          <p v-for="group in memberGroups" :key="group._id">{{ group.groupName }}</p>
         </div>
 
       </div>
@@ -162,13 +212,14 @@ async joinGroup() {
 
 <div class="sectionThree">
   <div class="mt-4">
-        <div class="text-white p-3 text-center">
-          <h6 class="fw-bold">Ägare av grupper</h6>
-          <p v-for="group in ownedGroups" :key="group">{{ group }}</p>
+        <div class="p-3 text-center">
+          <h5 class="fw-bold">Ägare av grupper</h5>
+          <p v-if="ownedGroups.length === 0">Du äger ej några grupper</p>
+          <p v-for="group in ownedGroups" :key="group">{{ group.groupName }}</p>
         </div>
       </div>
 </div>
-
+</div>
 
 </template>
 
@@ -178,18 +229,71 @@ async joinGroup() {
   margin-top: 10vh;
 }
 
+/* ------------------------Profil sektion ----------------------------------------*/
+
 .sectionOne{
   height: 30vh;
   display: flex;
+  flex-direction: column;
   width: 100vw;
+  justify-content: center;
+  align-items: center;  
 }
+
+.profile-pic {
+  width: auto;  
+  height: 80%;  
+  object-fit: cover;  
+  border-radius: 10px;
+}
+
+
+
+
+@media (max-width: 767px) {
+  .sectionOne {
+    height: 35vh;
+    margin-bottom: 1vh;
+  }
+
+  .profile-pic {
+    height: 75%;  
+  }
+
+  .userCont{
+    display: flex;
+    flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  
+  
+}
+
+}
+
+@media (min-width: 768px) {
+  .sectionOne {
+    height: 30vh;  
+  }
+
+  .profile-pic {
+    height: 80%;  
+  }
+}
+
+
+
+/* ------------------------grupper sektioner ----------------------------------------*/
 
 .sectionTwo
 {
   height: 30vh;
   background-color: #7e9cffab;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  flex-direction: column;
   align-items: center;
   width: 100vw;
 }
@@ -198,10 +302,13 @@ async joinGroup() {
   height: 30vh;
   background-color: #4767f7ad;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  flex-direction: column;
   align-items: center;
   width: 100vw;
 }
+
+/* ------------------------Knapp/gå med grupp ----------------------------------------*/
 
 
 .toggle-code-btn {
@@ -219,10 +326,10 @@ async joinGroup() {
 
 
 .group-code-box {
-
+  
   position: absolute;
   top: 10vh;
-  right: 20px;
+  right: 5vw;
   background: white;
   padding: 10px;
   border-radius: 8px;
@@ -231,6 +338,27 @@ async joinGroup() {
   width: 250px;
 }
 
+/* ------------------------Spinner ----------------------------------------*/
+
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;  
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+  border-width: 0.5rem;
+}
 
 
 
