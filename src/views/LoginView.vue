@@ -25,7 +25,6 @@ main{
   background-size: cover; 
   background-position: center; 
   min-height: 100vh;
-  
   color: white;
 }
 h1{

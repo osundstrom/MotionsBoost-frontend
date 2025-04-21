@@ -83,6 +83,7 @@ console.log(logo);
     padding: 0.5rem 1rem;
     background-color: rgba(245, 102, 102, 0.726);
     text-align: center;
+    z-index: 1;
     
   }
 
@@ -99,13 +100,15 @@ console.log(logo);
   }
   
   .dropdown-menu-list{
-    background-color: #436efdc9;
+    background-color: #7E9CFF;
+   
   }
   /*--------------------------navbar color---------------------------------*/
   
   .custom-navbar{
-      background-color: #436efdc9;
+      background-color: #436EFD;
       box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      height: 7vh;
   }
   
   /*--------------------------navbar logo---------------------------------*/
