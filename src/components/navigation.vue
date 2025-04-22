@@ -11,11 +11,22 @@ console.log(logo);
       RouterLink 
     },
 
+    data() {
+        return {
+          imageUrl: sessionStorage.getItem("imageUrl"),
+          
+        };
+      },
+
     methods: {
+      
       //funktion utlogg
       logout() {
         sessionStorage.removeItem("token"); //tar bort token.
         sessionStorage.removeItem("userId"); //tar bort user.
+        sessionStorage.removeItem("user"); //tar bort user.
+        sessionStorage.removeItem("email"); //tar bort email. 
+        sessionStorage.removeItem("imageUrl"); //tar bort imageUrl.
         console.log("utloggad")
         this.$router.push("/");
       }
@@ -49,7 +60,7 @@ console.log(logo);
       <!-- Avatar with logout -->
       <div class="dropdown">
         <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="../assets/backgroundlogin.jpg" alt="Avatar" class="rounded-circle" width="40" height="40">
+          <img :src="imageUrl || '../assets/logomb.png'" alt="Avatar" class="rounded-circle" width="40" height="40">
         </a>
         <ul class="dropdown-menu dropdown-menu-end">
           <li>

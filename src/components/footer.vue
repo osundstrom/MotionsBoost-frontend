@@ -27,7 +27,7 @@
 }
 
 footer{
-    position: absolute;
+    position: relative;
     width: 100vw;
     margin-top: 0;
     bottom: 0;

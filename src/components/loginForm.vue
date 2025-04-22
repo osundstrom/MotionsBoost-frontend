@@ -10,6 +10,10 @@ export default {
     
 methods: {
 
+    goToRegister() {
+      this.$router.push("/register"); 
+    },
+
     
 //funktion för inlogg
     async loginFunc() {
@@ -53,6 +57,7 @@ methods: {
         sessionStorage.setItem("userId", data.payload.userId)
         sessionStorage.setItem("user", data.payload.name)
         sessionStorage.setItem("email", data.payload.email)
+        sessionStorage.setItem("imageUrl", "http://localhost:3000" + data.payload.imageUrl);
 
         //Om token finns så skcikas man vidare till /profil 
         if (data.payload.userId && data.jwtToken) {
@@ -90,8 +95,16 @@ methods: {
             <input type="password" class="form-control" id="InputPassword" placeholder="Lösenord">
         </div>
         
-            <button type="submit" class="btn btn-primary">Logga in</button>
+        <div class="d-flex justify-content-between">
+        
+        <button type="submit" class="btn btn-primary w-45">Logga in</button>
+
+        
+        <button type="button" class="btn btn-secondary w-45" @click="goToRegister">Skapa konto</button>
+      </div>
+            
 </form>
+
 
 </div>
 <div id="errorDiv"></div>

@@ -7,6 +7,7 @@ export default {
 
   data() {
     return {
+      imageUrl: sessionStorage.getItem("imageUrl"),
       name: sessionStorage.getItem("user"),
       totalSteps: 0,
       loading: true,
@@ -23,10 +24,16 @@ export default {
     this.fetchTotalSteps();
   },
 
+ 
 
   methods: {
     //-------------------------steps fetch--------------------------------------//
     async fetchTotalSteps() {
+
+      //test för se vad som får.
+      const imageUrl = sessionStorage.getItem("imageUrl");
+        console.log(imageUrl)
+      
       this.loading = true; 
       try {
         const token = sessionStorage.getItem("token");
@@ -113,8 +120,7 @@ async fetchGroups() {
         .filter(item => item.groupRole === "owner")
         .map(item => item.group);
 
-        console.log("Member Groups:", this.memberGroups);
-console.log("Owned Groups:", this.ownedGroups);
+  
           
         } else {
           console.error("kunde ej hämta grupper för användaren");
@@ -162,40 +168,28 @@ console.log("Owned Groups:", this.ownedGroups);
 </div>
 
   <!-- Sektion profil-->
-  <div class="sectionOne">
+  <div class="sectionOne container d-flex align-items-center justify-content-center">
+  <div class="row w-100">
 
-    <div class="container h-100">
-      <div class="row h-100 align-items-center">
-        
-          <div class="col-12 col-md-3 d-flex justify-content-center align-items-center" style="height: 80%">
+    <!-- Profil bild -->
+    <div class="col-12 col-md-4 d-flex justify-content-center align-items-center">
+      <img :src="imageUrl || '../assets/logomb.png'" class="img-fluid rounded profile-pic" alt="Profil bild">
+    </div>
 
-            <img src="../assets/backgroundlogin.jpg" class="img-fluid rounded profile-pic" alt="Profil bild">
-
-          </div>
-
-          <div class="col-12 col-md-9 userCont">
-              <h5 class="d-flex justify-content-between align-items-center">
-                {{ name }}
-
-              </h5>
-
-                  <div class="mt-2 ">
-                    <p v-if="loading" >
-                      <strong class="spinner-grow text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                      </strong>
-                    </p>
-                    <p v-else class="text-nowrap">Du har tagit totalt <strong>{{ totalSteps }}</strong> steg</p>
-                  </div>
-               
-          </div>
-
-
-          
-        </div>
-
+    <!-- User Info -->
+    <div class="col-12 col-md-4 d-flex flex-column justify-content-center text-center">
+      <h2>{{ name }}</h2>
+      <div class="mt-2">
+        <p v-if="loading">
+          <strong class="spinner-grow text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </strong>
+        </p>
+        <p v-else class="text-nowrap fs-5">Du har tagit totalt <strong>{{ totalSteps }}</strong> steg</p>
       </div>
     </div>
+  </div>
+</div>
 
     <!-- Grupper -->
 <div class="sectionTwo">
@@ -215,7 +209,7 @@ console.log("Owned Groups:", this.ownedGroups);
         <div class="p-3 text-center">
           <h5 class="fw-bold">Ägare av grupper</h5>
           <p v-if="ownedGroups.length === 0">Du äger ej några grupper</p>
-          <p v-for="group in ownedGroups" :key="group">{{ group.groupName }}</p>
+          <p v-for="group in ownedGroups" :key="group">{{ group.groupName}}</p>
         </div>
       </div>
 </div>
@@ -232,56 +226,33 @@ console.log("Owned Groups:", this.ownedGroups);
 /* ------------------------Profil sektion ----------------------------------------*/
 
 .sectionOne{
-  height: 30vh;
-  display: flex;
-  flex-direction: column;
-  width: 100vw;
-  justify-content: center;
-  align-items: center;  
+ min-height: 400px;
+ text-align: left;
 }
 
 .profile-pic {
-  width: auto;  
-  height: 80%;  
+  min-width: 20vw;
   object-fit: cover;  
-  border-radius: 10px;
 }
+
 
 
 
 
 @media (max-width: 767px) {
   .sectionOne {
-    height: 35vh;
+    min-height: 35vh;
+    height: fit-content;
     margin-bottom: 1vh;
   }
 
-  .profile-pic {
-    height: 75%;  
-  }
 
-  .userCont{
-    display: flex;
-    flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  width: 100%;
-  
   
 }
 
-}
 
-@media (min-width: 768px) {
-  .sectionOne {
-    height: 30vh;  
-  }
 
-  .profile-pic {
-    height: 80%;  
-  }
-}
+
 
 
 
@@ -289,7 +260,7 @@ console.log("Owned Groups:", this.ownedGroups);
 
 .sectionTwo
 {
-  height: 30vh;
+  min-height: 30vh;
   background-color: #7e9cffab;
   display: flex;
   justify-content: flex-start;
@@ -299,7 +270,7 @@ console.log("Owned Groups:", this.ownedGroups);
 }
 
 .sectionThree{
-  height: 30vh;
+  min-height: 30vh;
   background-color: #4767f7ad;
   display: flex;
   justify-content: flex-start;

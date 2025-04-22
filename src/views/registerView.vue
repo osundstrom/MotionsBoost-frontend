@@ -1,8 +1,9 @@
 <script>
+import RegisterForm from '@/components/registerForm.vue';
 import loginForm from '../components/loginForm.vue'
 
 export default {
-    components: { loginForm}
+    components: { RegisterForm}
   }
 
 </script>
@@ -10,8 +11,8 @@ export default {
 <template>
 <main>
 
-<h1>Välkommen</h1>
-<loginForm/> <!--Visar loginForm komponenten-->
+<h1>Skapa ditt konto</h1>
+<RegisterForm/> <!--Visar registerForm komponenten-->
   
 </main>
 </template>
