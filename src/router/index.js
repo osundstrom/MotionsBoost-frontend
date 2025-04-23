@@ -33,6 +33,43 @@ const router = createRouter({
       },
     },
 
+    {
+      path: '/group/:groupId',
+      name: 'oneGroup',
+      component: () => import('../views/oneGroup.vue'),
+      props: true,
+      beforeEnter: (to, from, next) => {
+        
+        const token = sessionStorage.getItem("token");
+        if (token) {
+          next();
+        } else {
+          
+          next("/");
+        }
+      },
+    },
+
+    {
+      path: '/challenge/:challengeId',
+      name: 'oneChallenge',
+      component: () => import('../views/oneChallenge.vue'),
+      props: true,
+      beforeEnter: (to, from, next) => {
+        
+        const token = sessionStorage.getItem("token");
+        if (token) {
+          next();
+        } else {
+          
+          next("/");
+        }
+      },
+    },
+
+
+
+
 
   ],
 })

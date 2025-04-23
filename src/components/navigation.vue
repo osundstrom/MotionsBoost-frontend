@@ -47,10 +47,10 @@ console.log(logo);
           <i class="fa-solid fa-bars fs-2"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-list">
-          <li><RouterLink class="dropdown-item" to="/profil">Min sida</RouterLink></li>
-          <li><RouterLink class="dropdown-item" to="/creategroup">Skapa grupp</RouterLink></li>
-          <li><a class="dropdown-item" href="#">Inställningar</a></li>
-          <li><a class="dropdown-item" href="#">Information</a></li>
+          <li><RouterLink class="dropdown-item oneItem" to="/profil">Min sida</RouterLink></li>
+          <li><RouterLink class="dropdown-item oneItem" to="/creategroup">Skapa grupp</RouterLink></li>
+          <li><a class="dropdown-item oneItem" href="#">Inställningar</a></li>
+          <li><a class="dropdown-item oneItem" href="#">Information</a></li>
         </ul>
       </div>
 
@@ -111,7 +111,16 @@ console.log(logo);
   }
   
   .dropdown-menu-list{
-    background-color: #7E9CFF;
+    background-color: #7e9cffc4;
+    
+   
+  }
+  .oneItem {
+    font-weight: bolder;
+  }
+
+  .oneItem:hover{
+    background-color: #95abf500;
    
   }
   /*--------------------------navbar color---------------------------------*/

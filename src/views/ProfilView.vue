@@ -19,9 +19,9 @@ export default {
   },
 
 
-  mounted() {
-    this.fetchGroups();
-    this.fetchTotalSteps();
+  async mounted() {
+    await this.fetchGroups();
+    await this.fetchTotalSteps();
   },
 
  
@@ -56,6 +56,8 @@ export default {
         }
       } catch (error) {
         console.error(error);
+      }finally {
+        this.loading = false; 
       }
       
     },
@@ -88,14 +90,21 @@ async joinGroup() {
           alert("Kan ej gå med i gruppen");
           console.error(data.message);
         }
+        
       } catch (error) {
         console.error(error);
+      }finally {
+        this.fetchGroups(); //uppdatera grupper
+        this.loading = false; 
       }
-    },
+      
+     },
+      
 
     //-------------------------hämta grupper--------------------------------------//
 async fetchGroups() {
       try {
+        this.loading = true;
         const token = sessionStorage.getItem("token");   
         const userId = sessionStorage.getItem("userId");
 
@@ -120,7 +129,9 @@ async fetchGroups() {
         .filter(item => item.groupRole === "owner")
         .map(item => item.group);
 
-  
+        console.log("Owned Groups:", this.ownedGroups);
+        console.log("member Groups:", this.memberGroups);
+          
           
         } else {
           console.error("kunde ej hämta grupper för användaren");
@@ -131,6 +142,7 @@ async fetchGroups() {
       finally {
           this.loading = false;
         }
+        
     },
 
   }
@@ -197,7 +209,14 @@ async fetchGroups() {
         <div class=" p-3 mb-2 text-center">
           <h5 class="fw-bold">Medlem i grupper</h5>
           <p v-if="memberGroups.length === 0">Gå med i några grupper</p>
-          <p v-for="group in memberGroups" :key="group._id">{{ group.groupName }}</p>
+          <router-link
+        v-for="group in memberGroups"
+        :key="group._id"
+        :to="{ name: 'oneGroup', params: { groupId: group._id } }"
+        class="group-link"
+      >
+        {{ group.groupName }}
+      </router-link>
         </div>
 
       </div>
@@ -209,7 +228,14 @@ async fetchGroups() {
         <div class="p-3 text-center">
           <h5 class="fw-bold">Ägare av grupper</h5>
           <p v-if="ownedGroups.length === 0">Du äger ej några grupper</p>
-          <p v-for="group in ownedGroups" :key="group">{{ group.groupName}}</p>
+          <router-link
+        v-for="group in ownedGroups"
+        :key="group._id"
+        :to="{ name: 'oneGroup', params: { groupId: group._id } }"
+        class="group-link"
+      >
+        {{ group.groupName }}
+      </router-link>
         </div>
       </div>
 </div>

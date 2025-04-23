@@ -1,9 +1,17 @@
 <script>
+
 import loginForm from '../components/loginForm.vue'
 
 export default {
-    components: { loginForm}
-  }
+    components: { loginForm },
+
+    mounted() {
+        const token = sessionStorage.getItem("token");
+        if (token) {
+            this.$router.push("/profil");
+        }
+    }
+}
 
 </script>
 
