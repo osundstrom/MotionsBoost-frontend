@@ -14,6 +14,7 @@ export default {
        
         async createGroup() {
             let errorDiv = document.getElementById("errorDiv");
+            const token = sessionStorage.getItem("token");
             errorDiv.textContent = ""; 
 
             if (!this.groupName) {
