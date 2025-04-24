@@ -294,6 +294,10 @@ async fetchGroups() {
   align-items: center;
   width: 100vw;
 }
+.group-link{
+  display: flex;
+  flex-direction: column;
+}
 
 .sectionThree{
   min-height: 30vh;

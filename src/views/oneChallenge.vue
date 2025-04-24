@@ -8,12 +8,15 @@ export default {
 
   data() {
     return {
-        groupDetails: null,
+
+        challengeDetails: null,
         loading: true,
-        groupMembers: [],
+        leaderboard: [],
+        currentTotalSteps: 0,
         ActiveUserId: sessionStorage.getItem("userId"),
-        showStepCodeBox: false,
-        challangeSteps: 10000, //måste bytas med inmatade sedfan
+        stepsToAdd: null,
+        errorMessage: null,
+        
       
     };
   },
@@ -21,24 +24,28 @@ export default {
 
   async mounted() {
     console.log("GruppId:", this.groupId);
-    await this.fetchGroupInfo();
-    await this.fetchGroupMembers();
+    console.log("ChallengeId:", this.challengeId);
+
+    await this.fetchChallengeInfo();;
+    await this.fetchChallengeLeaderboard();
   },
 
  
 
   methods: {
-    //------------------------- fetch gruppinfo--------------------------------------//
-    async fetchGroupInfo() {
+    //------------------------- fetch challnge info--------------------------------------//
+    async fetchChallengeInfo() {
       
       this.loading = true; 
+      this.errorMessage = null;
 
       try {
-        console.log("gruppid", this.groupId)
+        console.log("challengeId", this.challengeId)
+
         const token = sessionStorage.getItem("token");
 
         console.log("Token:", token);
-        const response = await fetch(`http://localhost:3000/groups/${this.groupId}`, {
+        const response = await fetch(`http://localhost:3000/challenges/${this.challengeId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -49,12 +56,12 @@ export default {
 
         if (response.ok) {
           const data = await response.json();
-          this.groupDetails = data;
+          this.challengeDetails = data;
 
-          console.log("Gruppinformation:", this.groupDetails);
+          
 
         } else {
-          console.error("kunde ej hämta gruppens information");
+          console.error("kunde ej hämta utmaninigens information");
         }
       } catch (error) {
         console.error(error);
@@ -62,13 +69,13 @@ export default {
       
         this.loading = false;
     },
-//------------------------- fetch gruppanvändare--------------------------------------//
-    async fetchGroupMembers() {
-      this.loading = true; 
-
+//------------------------- fetch leaderboard--------------------------------------//
+    async fetchChallengeLeaderboard() {
+      
+      this.errorMessage = null;
       try {
         const token = sessionStorage.getItem("token");
-        const response = await fetch(`http://localhost:3000/groups/${this.groupId}/members`, {
+        const response = await fetch(`http://localhost:3000/challengeUsers/challenge/${this.challengeId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -78,10 +85,14 @@ export default {
 
         if (response.ok) {
           const data = await response.json();
-          this.groupMembers = data;
-          console.log("Gruppmedlemmar:", this.groupMembers);
+          this.leaderboard = data;
+
+          this.currentTotalSteps = this.leaderboard.reduce((sum, entry) => {
+            return sum + entry.stepsTaken;
+          }, 0);
+         
         } else {
-          console.error("kunde ej hämta gruppens medlemmar");
+          console.error("kunde ej hämta tävlandens steg");
         }
       } catch (error) {
         console.error(error);
@@ -90,18 +101,76 @@ export default {
       }
     },
 
+
+    async addSteps() {
+      
+
+      this.loading = true; 
+      this.errorMessage = null; 
+
+      try {
+        const token = sessionStorage.getItem("token");
+        const response = await fetch(`http://localhost:3000/challengeusers/${this.challengeId}/addsteps`, { 
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+          body: JSON.stringify({ steps: this.stepsToAdd }), 
+        });
+
+        if (response.ok) {
+         
+          this.stepsToAdd = null;
+          await this.fetchChallengeLeaderboard(); 
+          
+
+        } else {
+          
+          
+          this.errorMessage = "Kunde inte lägga till steg";
+          console.error(this.errorMessage);
+          
+        }
+      } catch (error) {
+        
+        console.error(error);
+        this.errorMessage = error.message;
+        
+      } finally {
+        this.loading = false; 
+      }
+    },
+
 },
 
 
+
+
     computed: {
-    progressPercentage() {
-      if (!this.groupDetails || !this.groupDetails.totalSteps) return 0;
-      return Math.min((this.groupDetails.totalSteps / this.challangeSteps) * 100, 100)
+      targetStepsDisplay() {
+      return this.challengeDetails?.targetSteps;
+
     },
+
+    currentStepsDisplay() {
+      return this.currentTotalSteps;
+    },
+
+    progressPercentage() {
+      const current = this.currentTotalSteps;
+      const target = this.challengeDetails.targetSteps;
+      if (target === 0) return 0; 
+      return Math.min(Math.round((current / target) * 100), 100);
+    }
+
   },
 
 
+   
+
 }
+
 
 
 
@@ -111,96 +180,94 @@ export default {
 
 
 <template>
-
   <!-- Navigation -->
+   
   <navigation />
   <div class="forContent">
-
-  <div v-if="loading" class="loading-overlay">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
+    <div v-if="loading" class="loading-overlay">
+    </div>
+   
+    <div v-else-if="!challengeDetails" class="text-center mt-5">
+        <h2>Utmaning kunde inte laddas</h2>
+        <p>Försök igen senare.</p>
     </div>
     <div v-else>
-
-
-   
-
      
-
-  <!-- Sektion profil-->
-  <div class="sectionOne">
-    <h1>{{ groupDetails.groupName }}</h1>
-    
-      <div>
-        <h5>{{ groupDetails?.info }}</h5>
-
-        <div class="codeJoin" v-if="groupDetails?.groupRole === 'owner'">
-        <h5>Kod: {{ groupId }}</h5>
-        <p>Ge koden till alla du vill bjuda in</p>
-        
-        </div>
-         
-        <div class="progress-container">
-              <h5>Steg: {{ groupDetails?.totalSteps }} / {{ challangeSteps }}</h5>
-              <div class="progress">
-                <div
-                  class="progress-bar"
-                  role="progressbar"
-                  :style="{ width: progressPercentage + '%' }"
-                  :aria-valuenow="progressPercentage"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                >
-                  {{ progressPercentage }}%
-                </div>
+      <div class="sectionOne">
+        <h1>{{ challengeDetails.challengeName }}</h1>
+        <div>
+          
+          <!-- Progress Bar -->
+          <div class="progress-container">
+            <h5>Steg: {{ currentStepsDisplay }} / {{ targetStepsDisplay }}</h5>
+            <div class="progress">
+              <div
+                class="progress-bar"
+                role="progressbar"
+                :style="{ width: progressPercentage + '%' }"
+                :aria-valuenow="progressPercentage"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                {{ progressPercentage }}%
               </div>
             </div>
-      
+          </div>
+        </div>
+
+        <!-- Lägg till steg -->
+        <div class="add-steps-container">
+          <div class="add-steps-form">
+            <input
+              type="number"
+              min="1"
+              class="form-control"
+              placeholder="Ange antal steg att lägga till"
+              v-model.number="stepsToAdd" 
+            />
+            <button class="btn btn-success mt-2" @click="addSteps">Lägg till steg</button>
+          </div>
+        </div>
       </div>
 
-      <div class="add-steps-container">
-  
-  <div class="add-steps-form">
-    <input
-      type="number"
-      class="form-control"
-      placeholder="Ange antal steg"
-      v-model="stepsToAdd"
-    />
-    <button class="btn btn-success mt-2" @click="addSteps">Lägg till steg</button>
-  </div>
-</div>
-  
-</div>
-
-   
-<div class="sectionTwo">
-  <h2>Medlemmar i gruppen</h2>
-  <div v-if="groupMembers.length === 0">
-    <p>Inga medlemmar i gruppen ännu.</p>
-  </div>
-  <div v-else>
-    <ul class="member-list">
-      <li v-for="(member, index) in groupMembers" :key="index">
-        <div class="member-header">
+      
+      <div class="sectionTwo">
+        <h2>Antal steg</h2>
         
-        <strong>
-            {{ member.firstName }} {{ member.lastName }} 
-            <span v-if="member.groupRole === 'owner'" class="badge bg-warning"><i class="fa-solid fa-crown"></i></span>
-            <span v-if="member.userId === ActiveUserId" class="badge bg-info"><i class="fa-solid fa-user"></i> </span>
-        </strong>
+        <div v-if="leaderboard.length === 0">
+          <p>Inga steg registrerade för denna utmaning ännu.</p>
         </div>
-        <p class="member-steps">{{ member.totalSteps }} steg</p>
-      </li>
-    </ul>
+        
+        <div v-else>
+          <ul class="member-list">
+            
+            <li v-for="(entry, index) in leaderboard" :key="entry.userId || index">
+              <div class="member-info">
+               
+                <img
+                  :src="`http://localhost:3000${entry.user.imageUrl}`"
+                  alt="Profile Image"
+                  class="profile-image"
+                />
+                <div class="member-details">
+                  <div class="member-header">
+                    <strong>
+                     
+                      {{ entry.user.firstName }} {{ entry.user.lastName }}
+                      
+                      <span v-if="entry.userId === ActiveUserId" class="badge bg-info"><i class="fa-solid fa-user"></i></span>
+                    </strong>
+                  </div>
+                 
+                  <p class="member-steps">{{ entry.stepsTaken }} steg</p>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
-
-</div>
-</div>
-
-
 </template>
 
 
@@ -240,14 +307,14 @@ export default {
 /* ----------------------- sektion ett ----------------------------------------*/
 
 .sectionOne{
- min-height: 30vh;
+ min-height: 40vh;
  text-align: center;
 }
 
 .progress-container {
   margin: 20px auto; 
   text-align: center;
-  width: 80%; 
+  max-width: 80%; 
   
 }
 
@@ -270,7 +337,7 @@ export default {
 
 .sectionTwo
 {
-  min-height: 52vh;
+  min-height: 42vh;
   background-color: #7e9cffab;
   display: flex;
   justify-content: flex-start;
@@ -279,11 +346,28 @@ export default {
   width: 100vw;
   li{
     list-style-type: none;
+    display: flex;
+    align-items: center;
   }
+  img{
+    width: 40px;
+  height: 40px;
+  border-radius: 50%; 
+  margin-right: 15px; 
+  object-fit: cover; 
+  margin-bottom: 2vh;
+  border: 1px solid #ccc;
 }
 
+  }
 
 
+
+.member-info {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
 
 
 

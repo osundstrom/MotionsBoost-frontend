@@ -34,6 +34,39 @@ const router = createRouter({
     },
 
     {
+      path: '/creategroup',
+      name: 'creategroup',
+      component: () => import('../views/createGroupView.vue'),
+      beforeEnter: (to, from, next) => {
+        
+        const token = sessionStorage.getItem("token");
+        if (token) {
+          next();
+        } else {
+          
+          next("/");
+        }
+      },
+    },
+
+    {
+      path: '/createchallenge/:groupId',
+      name: 'createChallenge',
+      component: () => import('../views/createChallengeView.vue'),
+      props: true,
+      beforeEnter: (to, from, next) => {
+        
+        const token = sessionStorage.getItem("token");
+        if (token) {
+          next();
+        } else {
+          
+          next("/");
+        }
+      },
+    },
+
+    {
       path: '/group/:groupId',
       name: 'oneGroup',
       component: () => import('../views/oneGroup.vue'),

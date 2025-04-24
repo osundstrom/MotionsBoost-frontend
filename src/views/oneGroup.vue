@@ -1,5 +1,7 @@
 <script>
 import navigation from '../components/navigation.vue'
+ 
+
 
 
 export default {
@@ -20,6 +22,7 @@ export default {
 
 
   async mounted() {
+    console.log("onegroup MOUNTED - groupId:", this.groupId);
     console.log("GruppId:", this.groupId);
     await this.fetchGroupInfo();
     await this.fetchGroupMembers();
@@ -169,12 +172,23 @@ export default {
         </div>
     </div>
 
-   
+    
 
 </div>
 
         <div class="challengesSection">
       <h2>Utmaningar</h2>
+      <div class="mt-4" v-if="groupDetails?.groupRole === 'owner'">
+        <router-link
+        :to="{ name: 'createChallenge', params: { groupId: this.groupId } }"
+        class="btn btn-primary"
+        >
+        Skapa ny utmaning
+        </router-link>
+        
+  </div>
+      
+
       <div v-if="groupChallenges.length === 0">
         <p>Inga utmaningar har skapats ännu.</p>
       </div>
@@ -208,15 +222,23 @@ export default {
   <div v-else>
     <ul class="member-list">
       <li v-for="(member, index) in groupMembers" :key="index">
-        <div class="member-header">
-        
-        <strong>
-            {{ member.firstName }} {{ member.lastName }} 
-            <span v-if="member.groupRole === 'owner'" class="badge bg-warning"><i class="fa-solid fa-crown"></i></span>
-            <span v-if="member.userId === ActiveUserId" class="badge bg-info"><i class="fa-solid fa-user"></i> </span>
-        </strong>
+        <div class="member-info">
+          <img 
+            :src="`http://localhost:3000${member.imageUrl}` || '../assets/logomb.png'" 
+            alt="Profile Image" 
+            class="profile-image"
+          />
+          <div class="member-details">
+            <div class="member-header">
+              <strong>
+                {{ member.firstName }} {{ member.lastName }} 
+                <span v-if="member.groupRole === 'owner'" class="badge bg-warning"><i class="fa-solid fa-crown"></i></span>
+                <span v-if="member.userId === ActiveUserId" class="badge bg-info"><i class="fa-solid fa-user"></i> </span>
+              </strong>
+            </div>
+            <p class="member-steps">{{ member.totalSteps }} steg</p>
+          </div>
         </div>
-        <p class="member-steps">{{ member.totalSteps }} steg</p>
       </li>
     </ul>
   </div>
@@ -317,11 +339,28 @@ export default {
   width: 100vw;
   li{
     list-style-type: none;
+    display: flex;
+    align-items: center;
   }
+  img{
+    width: 40px;
+  height: 40px;
+  border-radius: 50%; 
+  margin-right: 15px; 
+  object-fit: cover; 
+  margin-bottom: 2vh;
+  border: 1px solid #ccc;
 }
 
+  }
 
 
+
+.member-info {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
 
 
 

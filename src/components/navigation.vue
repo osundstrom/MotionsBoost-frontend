@@ -49,15 +49,15 @@ console.log(logo);
         <ul class="dropdown-menu dropdown-menu-list">
           <li><RouterLink class="dropdown-item oneItem" to="/profil">Min sida</RouterLink></li>
           <li><RouterLink class="dropdown-item oneItem" to="/creategroup">Skapa grupp</RouterLink></li>
-          <li><a class="dropdown-item oneItem" href="#">Inställningar</a></li>
+          <li><RouterLink class="dropdown-item oneItem" href="#">Inställningar</RouterLink></li>
           <li><a class="dropdown-item oneItem" href="#">Information</a></li>
         </ul>
       </div>
 
-      <!-- Centered logo -->
+      <!-- logo -->
       <img src="../assets/logomb.png" alt="Logo" class="navbar-logo">
 
-      <!-- Avatar with logout -->
+      <!-- Avatar med logout -->
       <div class="dropdown">
         <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           <img :src="imageUrl || '../assets/logomb.png'" alt="Avatar" class="rounded-circle" width="40" height="40">
