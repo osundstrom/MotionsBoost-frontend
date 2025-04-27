@@ -9,7 +9,7 @@ export default {
 
     
 methods: {
-    
+      // gå till login 
         goToLogin() {
         this.$router.push("/"); 
         },

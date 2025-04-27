@@ -188,7 +188,7 @@ async fetchGroups() {
       <img :src="imageUrl || '../assets/logomb.png'" class="img-fluid rounded profile-pic" alt="Profil bild">
     </div>
 
-    <!-- User Info -->
+    <!-- total steg och namn -->
     <div class="col-12 col-md-4 d-flex flex-column justify-content-center text-center">
       <h2>{{ name }}</h2>
       <div class="mt-2">
@@ -222,7 +222,7 @@ async fetchGroups() {
       </div>
     </div>
 
-
+ <!-- Sektion tre-->
 <div class="sectionThree">
   <div class="mt-4">
         <div class="p-3 text-center">

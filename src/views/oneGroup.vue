@@ -7,7 +7,7 @@ import navigation from '../components/navigation.vue'
 export default {
     props: ['groupId'],
   components: { navigation },
-
+//------------------------- data--------------------------------------//
   data() {
     return {
         groupDetails: null,
@@ -20,7 +20,7 @@ export default {
     };
   },
 
-
+//------------------------- Mounted--------------------------------------//
   async mounted() {
     console.log("onegroup MOUNTED - groupId:", this.groupId);
     console.log("GruppId:", this.groupId);
@@ -116,7 +116,7 @@ export default {
         const challenges = await response.json();
         this.groupChallenges = challenges;
 
-        console.log("utamingar", this.groupChallenges);
+        console.log("utmaningar", this.groupChallenges);
 
       } else {
 
@@ -175,7 +175,7 @@ export default {
     
 
 </div>
-
+ <!-- Sektion utmainingar-->
         <div class="challengesSection">
       <h2>Utmaningar</h2>
       <div class="mt-4" v-if="groupDetails?.groupRole === 'owner'">
@@ -213,7 +213,7 @@ export default {
       
       
 
-   
+    <!-- Sektion två-->
 <div class="sectionTwo">
   <h2>Medlemmar i gruppen</h2>
   <div v-if="groupMembers.length === 0">

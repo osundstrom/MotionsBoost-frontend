@@ -10,7 +10,7 @@ export default {
 
     mounted() {
         
-        console.log("VIEW MOUNTED - groupId:", this.groupId);
+        console.log( "mounted createChallenge groupId:", this.groupId);
         
     }
 }

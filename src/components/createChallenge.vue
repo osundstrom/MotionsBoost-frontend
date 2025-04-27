@@ -24,8 +24,10 @@ export default {
   
   },
 
+  //------------------------- methods--------------------------------------//
     methods: {
        
+      //------------------------- createChallenge--------------------------------------//
         async createChallenge() {
             let errorDiv = document.getElementById("errorDiv");
             errorDiv.textContent = ""; 
@@ -89,10 +91,12 @@ export default {
 
 
 <template>
+   <!-- Sektion ett-->
     <div class="SectionOne">
         <h1>Skapa en utmaning</h1>
     </div>
 
+ <!-- Sektion två-->
     <div class="SectionTwo">
     <form @submit.prevent="createChallenge" class="container-md">
       
@@ -141,6 +145,8 @@ export default {
 
 <style scoped>
 
+/*----------------------- sektion ett ----------------------------------------*/
+
 .SectionOne{
     margin-top: 10vh;
     color: rgb(0, 0, 0);
@@ -148,6 +154,7 @@ export default {
     min-height: 10vh;
     
 }
+/*----------------------- form ----------------------------------------*/
 
 
  form{
@@ -166,7 +173,8 @@ export default {
         width: 40vw;
     }
 }
-  
+  /*----------------------- sektion två ----------------------------------------*/
+
 .SectionTwo{
     width: 100%;
     color: white;
@@ -178,6 +186,7 @@ export default {
 }
 
 
+/*----------------------- error ----------------------------------------*/
 
   #errorDiv{
     display: flex;

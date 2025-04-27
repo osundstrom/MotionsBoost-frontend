@@ -101,7 +101,7 @@ export default {
       }
     },
 
-
+//------------------------- add steps--------------------------------------//
     async addSteps() {
       
 
@@ -145,7 +145,7 @@ export default {
 },
 
 
-
+//------------------------- computed--------------------------------------//
 
     computed: {
       targetStepsDisplay() {
@@ -192,7 +192,7 @@ export default {
         <p>Försök igen senare.</p>
     </div>
     <div v-else>
-     
+      <!-- Sektion ett-->
       <div class="sectionOne">
         <h1>{{ challengeDetails.challengeName }}</h1>
         <div>
@@ -230,7 +230,7 @@ export default {
         </div>
       </div>
 
-      
+       <!-- Sektion två-->
       <div class="sectionTwo">
         <h2>Antal steg</h2>
         
@@ -273,10 +273,12 @@ export default {
 
 <style scoped>
 
+
 .forContent {
   margin-top: 10vh;
 }
 
+/* ----------------------- add steps ----------------------------------------*/
 .add-steps-container {
   margin: 20px auto;
   text-align: center;
