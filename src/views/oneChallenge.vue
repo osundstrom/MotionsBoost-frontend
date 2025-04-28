@@ -28,6 +28,7 @@ export default {
 
     await this.fetchChallengeInfo();;
     await this.fetchChallengeLeaderboard();
+    await this.checkChallengeStatus(); 
   },
 
  
@@ -90,7 +91,7 @@ export default {
           this.currentTotalSteps = this.leaderboard.reduce((sum, entry) => {
             return sum + entry.stepsTaken;
           }, 0);
-         
+          this.checkChallengeStatus(); //kollar om utmaningen är klar
         } else {
           console.error("kunde ej hämta tävlandens steg");
         }
@@ -142,7 +143,37 @@ export default {
       }
     },
 
+    //------------------------- kolla avklarad--------------------------------------//
+async checkChallengeStatus() {
+    if (this.currentTotalSteps >= this.challengeDetails.targetSteps) {
+      try {
+        const token = sessionStorage.getItem("token");
+        const response = await fetch(`http://localhost:3000/challenges/${this.challengeId}/status`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+          body: JSON.stringify({ status: false }),
+        });
+        const data = await response.json();
+        if (response.ok) {
+          console.log("uppdaterat status");
+          console.log(data);
+          this.challengeDetails.challengeStatus = false; 
+          this.$emit("statusUpdated")
+        } else {
+          console.error("Kunde inte uppdatera  status");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  },
+
 },
+
+
 
 
 //------------------------- computed--------------------------------------//
@@ -163,6 +194,8 @@ export default {
       if (target === 0) return 0; 
       return Math.min(Math.round((current / target) * 100), 100);
     }
+
+   
 
   },
 
@@ -201,19 +234,24 @@ export default {
           <div class="progress-container">
             <h5>Steg: {{ currentStepsDisplay }} / {{ targetStepsDisplay }}</h5>
             <div class="progress">
-              <div
-                class="progress-bar"
-                role="progressbar"
-                :style="{ width: progressPercentage + '%' }"
-                :aria-valuenow="progressPercentage"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              >
-                {{ progressPercentage }}%
-              </div>
-            </div>
+      <div
+        class="progress-bar"
+        :class="{ orange: progressPercentage < 100, green: progressPercentage === 100 }"
+        role="progressbar"
+        :style="{ width: progressPercentage + '%' }"
+        :aria-valuenow="progressPercentage"
+        aria-valuemin="0"
+        aria-valuemax="100"
+  >
+    {{ progressPercentage }}%
+  </div>
+</div>
           </div>
         </div>
+
+        <div v-if="challengeDetails.challengeStatus === false" class="completion-message">
+        <h3 class="text-success">Utmaningen är avklarad!</h3>
+      </div>
 
         <!-- Lägg till steg -->
         <div class="add-steps-container">
@@ -245,10 +283,17 @@ export default {
               <div class="member-info">
                
                 <img
-                  :src="`http://localhost:3000${entry.user.imageUrl}`"
-                  alt="Profile Image"
-                  class="profile-image"
-                />
+            v-if="entry.user.imageUrl && entry.user.imageUrl !== 'null' && entry.user.imageUrl !== ''"
+            :src="`http://localhost:3000${entry.user.imageUrl}`"
+            alt="Profile Image"
+            class="profile-image"
+            />
+          <img
+          v-else
+          src="../assets/standardProfile.jpg"
+          alt="Default Profile Image"
+          class="profile-image"
+            />
                 <div class="member-details">
                   <div class="member-header">
                     <strong>
@@ -329,9 +374,18 @@ export default {
 
 .progress-bar {
   height: 100%; 
-  background-color: #4caf50; 
   transition: width 0.5s ease-in-out;
+  &.orange {
+    background-color: orange; 
+  }
+  &.green{
+    background-color: #4caf50; 
+  }
+  
 }
+
+
+
 
 
 
@@ -346,6 +400,7 @@ export default {
   flex-direction: column;
   align-items: center;
   width: 100vw;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
   li{
     list-style-type: none;
     display: flex;

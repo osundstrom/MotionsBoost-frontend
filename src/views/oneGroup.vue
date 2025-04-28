@@ -20,6 +20,7 @@ export default {
     };
   },
 
+
 //------------------------- Mounted--------------------------------------//
   async mounted() {
     console.log("onegroup MOUNTED - groupId:", this.groupId);
@@ -130,7 +131,26 @@ export default {
   
 
 }
-}
+},
+ //-------------------------computed --------------------------------------//
+
+ computed:{
+  sortMemberSteps() {
+    return this.groupMembers.sort((a, b) => {
+      return b.totalSteps - a.totalSteps; 
+    });
+  },
+
+  sortDateChallenges() {
+    return this.groupChallenges.slice().sort((b, a) => {
+      return new Date(a.challengeCreatedAt) - new Date(b.challengeCreatedAt);
+    });
+  }
+
+ },
+
+ 
+
 }
 
 
@@ -177,32 +197,35 @@ export default {
 </div>
  <!-- Sektion utmainingar-->
         <div class="challengesSection">
+          <div class="ifOwner">
       <h2>Utmaningar</h2>
-      <div class="mt-4" v-if="groupDetails?.groupRole === 'owner'">
+      <div class="float-right" style="margin-left: 1vw; " v-if="groupDetails?.groupRole === 'owner'">
         <router-link
         :to="{ name: 'createChallenge', params: { groupId: this.groupId } }"
         class="btn btn-primary"
         >
-        Skapa ny utmaning
+        +
         </router-link>
         
   </div>
-      
+</div>
 
       <div v-if="groupChallenges.length === 0">
         <p>Inga utmaningar har skapats ännu.</p>
       </div>
       
       <ul v-else class="challenge-list">
-  <li v-for="(challenge, index) in groupChallenges" :key="index">
+  <li v-for="(challenge, index) in sortDateChallenges" :key="index">
     <h4>
       <router-link
         :to="{ name: 'oneChallenge', params: { challengeId: challenge.challengeId }}"
         class="challenge-link"
+        @statusUpdated="fetchGroupChallenges"
       >
-      <i class="fa-solid fa-link"></i>{{ challenge.challengeName }}
-        <span v-if="challenge.challengeStatus === true"> - <i class="fa-solid fa-square-check green-icon"></i></span>
-        <span v-if="challenge.challengeStatus === false"> - <i class="fa-solid fa-square-xmark red-icon"></i></span>
+      
+      <i class="fa-solid"></i>{{ challenge.challengeName }}
+        <span v-if="challenge.challengeStatus === false"> - <i class="fa-solid fa-square-check green-icon"></i></span>
+        <span v-if="challenge.challengeStatus === true"> - <i class="fa-solid fa-hourglass-start yellow-icon"></i></span>
       </router-link>
     </h4>
     <p>Skapad: {{ new Date(challenge.challengeCreatedAt).toLocaleDateString() }}</p>
@@ -221,13 +244,20 @@ export default {
   </div>
   <div v-else>
     <ul class="member-list">
-      <li v-for="(member, index) in groupMembers" :key="index">
+      <li v-for="(member, index) in sortMemberSteps" :key="index">
         <div class="member-info">
-          <img 
-            :src="`http://localhost:3000${member.imageUrl}` || '../assets/logomb.png'" 
-            alt="Profile Image" 
+          <img
+            v-if="member.imageUrl && member.imageUrl !== 'null' && member.imageUrl !== ''"
+            :src="`http://localhost:3000${member.imageUrl}`"
+            alt="Profile Image"
             class="profile-image"
-          />
+            />
+          <img
+          v-else
+          src="../assets/standardProfile.jpg"
+          alt="Default Profile Image"
+          class="profile-image"
+            />
           <div class="member-details">
             <div class="member-header">
               <strong>
@@ -261,8 +291,9 @@ export default {
 /* ----------------------- sektion ett ----------------------------------------*/
 
 .sectionOne{
- min-height: 30vh;
+ min-height: 14vh;
  text-align: center;
+ 
 
 }
 
@@ -270,13 +301,14 @@ export default {
 
 
 .challengesSection {
-    min-height: 30vh;
+    min-height: 34vh;
   background-color: #4c72f1ab;
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
   align-items: center;
   width: 100vw;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
 
 }
 
@@ -286,6 +318,10 @@ export default {
 
 .red-icon{
     color: red;
+}
+
+.yellow-icon{
+    color: yellow;
 }
 
 .challenge-list {
@@ -320,6 +356,27 @@ export default {
   color: #555;
 }
 
+.ifOwner{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  width: 100%;
+
+  .btn{
+    margin: 0;
+    margin-right: 2vh;
+    margin-top: 1vh;
+  }
+  
+  h2{
+    margin: 0;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);}
+  }
+
 
 
 
@@ -330,13 +387,14 @@ export default {
 
 .sectionTwo
 {
-  min-height: 30vh;
+  min-height: 34vh;
   background-color: #7e9cffab;
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
   align-items: center;
   width: 100vw;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
   li{
     list-style-type: none;
     display: flex;

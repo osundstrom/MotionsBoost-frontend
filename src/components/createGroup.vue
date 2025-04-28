@@ -123,6 +123,7 @@ export default {
         margin-top: 2vh;
         max-width: 90vw;
         font-size: larger;
+        box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
         
 
     }
@@ -140,6 +141,7 @@ export default {
     background-color: #7e9cffab;
     padding: 2%;
     min-height: 71.5vh;
+    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
     
 }
 

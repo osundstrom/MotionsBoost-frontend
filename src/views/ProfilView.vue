@@ -183,10 +183,24 @@ async fetchGroups() {
   <div class="sectionOne container d-flex align-items-center justify-content-center">
   <div class="row w-100">
 
-    <!-- Profil bild -->
-    <div class="col-12 col-md-4 d-flex justify-content-center align-items-center">
-      <img :src="imageUrl || '../assets/logomb.png'" class="img-fluid rounded profile-pic" alt="Profil bild">
-    </div>
+  <!-- Profil bild -->
+  <div class="col-12 col-md-4 d-flex justify-content-center align-items-center">
+
+ <!-- om laddat upp profilbild -->
+  <img
+    v-if="imageUrl && imageUrl !== 'null' && imageUrl !== ''"
+    :src="`http://localhost:3000${imageUrl}`"
+    class="img-fluid rounded profile-pic"
+    alt="Profil bild"
+  >
+  <!-- om ej laddat upp profilbild -->
+  <img
+    v-else
+    src="../assets/standardProfile.jpg"
+    class="img-fluid rounded profile-pic"
+    alt="Standard profil bild"
+  >
+</div>
 
     <!-- total steg och namn -->
     <div class="col-12 col-md-4 d-flex flex-column justify-content-center text-center">
@@ -293,6 +307,7 @@ async fetchGroups() {
   flex-direction: column;
   align-items: center;
   width: 100vw;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
 }
 .group-link{
   display: flex;
@@ -307,6 +322,7 @@ async fetchGroups() {
   flex-direction: column;
   align-items: center;
   width: 100vw;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* ------------------------Knapp/gå med grupp ----------------------------------------*/

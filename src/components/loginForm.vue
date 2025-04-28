@@ -52,12 +52,12 @@ methods: {
 
         //console.log("token:", data.recivedToken.token);
 
-        //Sparar token i loclastorage
+        //Sparar token i sessionStorage
         sessionStorage.setItem("token", data.jwtToken);
         sessionStorage.setItem("userId", data.payload.userId)
         sessionStorage.setItem("user", data.payload.name)
         sessionStorage.setItem("email", data.payload.email)
-        sessionStorage.setItem("imageUrl", "http://localhost:3000" + data.payload.imageUrl);
+        sessionStorage.setItem("imageUrl", data.payload.imageUrl);
 
         //Om token finns så skcikas man vidare till /profil 
         if (data.payload.userId && data.jwtToken) {

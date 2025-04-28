@@ -57,17 +57,34 @@ console.log(logo);
       <!-- logo -->
       <img src="../assets/logomb.png" alt="Logo" class="navbar-logo">
 
-      <!-- Avatar med logout -->
-      <div class="dropdown">
-        <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <img :src="imageUrl || '../assets/logomb.png'" alt="Avatar" class="rounded-circle" width="40" height="40">
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end">
-          <li>
-            <a class="dropdown-item dropdown-logout" @click="logout">Logga ut</a>
-          </li>
-        </ul>
-      </div>
+     <!-- Avatar med logout -->
+<div class="dropdown">
+  <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <!-- om laddat upp profilbild -->
+    <img
+      v-if="imageUrl && imageUrl !== 'null' && imageUrl !== ''"
+      :src="`http://localhost:3000${imageUrl}`"
+      alt="Avatar"
+      class="rounded-circle"
+      width="40"
+      height="40"
+    >
+    <!-- om ej laddat upp profilbild -->
+    <img
+      v-else
+      src="../assets/standardProfile.jpg"
+      alt="Standard Avatar"
+      class="rounded-circle"
+      width="40"
+      height="40"
+    >
+  </a>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li>
+      <a class="dropdown-item dropdown-logout" @click="logout">Logga ut</a>
+    </li>
+  </ul>
+</div>
 
     </div>
   </nav>
