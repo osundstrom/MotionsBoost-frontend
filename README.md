@@ -1,29 +1,9 @@
-# MotionsBoost-frontend
+# MotionsBoost Frontend
 
-This template should help get you started developing with Vue 3 in Vite.
+Frontend delen för Motionsboost, detta är slutprojketet i webbutvecklingsporgrammet hos Miun.
+Här skapas en hemsida där anv'ndare kan skapa konto, logga in, skapa och gå med i grupper, skapa utmaningar för grupper de äger och regrestrera steg i dessa utmaningar.
 
-## Recommended IDE Setup
+Alla användare har en profilbild som även den går att ändra, den visas även som avatar bild överst i högra hörnet i sidans navigation.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+Hela hemsaidna är skapad med Vue, Bootstrap och Vuetify, samt lite egen styling med CSS/SCSS.
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
