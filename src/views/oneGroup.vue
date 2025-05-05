@@ -178,7 +178,7 @@ export default {
 
      
 
-  <!-- Sektion profil-->
+  <!-- Sektion ett-->
   <div class="sectionOne">
     <h1>{{ groupDetails?.groupName }}</h1>
     
@@ -224,11 +224,13 @@ export default {
       >
       
       <i class="fa-solid"></i>{{ challenge.challengeName }}
-        <span v-if="challenge.challengeStatus === false"> - <i class="fa-solid fa-square-check green-icon"></i></span>
-        <span v-if="challenge.challengeStatus === true"> - <i class="fa-solid fa-hourglass-start yellow-icon"></i></span>
+        
       </router-link>
     </h4>
-    <p>Skapad: {{ new Date(challenge.challengeCreatedAt).toLocaleDateString() }}</p>
+    <p>
+      <span v-if="challenge.challengeStatus === false"> Avklarad <i class="fa-solid fa-square-check green-icon"> </i></span>
+      <span v-if="challenge.challengeStatus === true"> Skapad: {{ new Date(challenge.challengeCreatedAt).toLocaleDateString() }}</span>
+      </p>
   </li>
 </ul>
     </div>
@@ -301,7 +303,7 @@ export default {
 
 
 .challengesSection {
-    min-height: 34vh;
+  min-height: 34vh;
   background-color: #4c72f1ab;
   display: flex;
   justify-content: flex-start;
@@ -309,6 +311,7 @@ export default {
   align-items: center;
   width: 100vw;
   box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+  padding-bottom: 1vh;
 
 }
 
@@ -332,6 +335,17 @@ export default {
   
 }
 
+.challenge-list li {
+  background-color: #ffffff91;
+  margin-top: 1vh;
+  text-wrap: nowrap;
+  padding-right: 2vw;
+  padding-left: 2vw;
+  border-radius: 10px;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+  
+}
+
 
 .challenge-link {
   text-decoration: none;
@@ -339,9 +353,9 @@ export default {
   display: block;
 }
 
-.challenge-link:hover {
+.challenge-list li:hover {
   background-color: #f0f0f0;
-  border-radius: 5px;
+  cursor: pointer;
 }
 
 .challenge-list h4 {

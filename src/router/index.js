@@ -100,6 +100,23 @@ const router = createRouter({
       },
     },
 
+    {
+      path: '/settings',
+      name: 'settings',
+      component: () => import('../views/settings.vue'),
+      props: true,
+      beforeEnter: (to, from, next) => {
+        
+        const token = sessionStorage.getItem("token");
+        if (token) {
+          next();
+        } else {
+          
+          next("/");
+        }
+      },
+    },
+
 
 
 

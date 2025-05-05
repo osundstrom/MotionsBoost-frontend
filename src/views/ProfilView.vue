@@ -273,6 +273,7 @@ async fetchGroups() {
 .profile-pic {
   min-width: 20vw;
   object-fit: cover;  
+  max-height: 30vh;
 }
 
 
@@ -308,10 +309,28 @@ async fetchGroups() {
   align-items: center;
   width: 100vw;
   box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  
 }
 .group-link{
   display: flex;
   flex-direction: column;
+  text-decoration: none;
+  color: black;
+  background-color: #ffffff91;
+  margin-top: 1vh;
+  text-wrap: nowrap;
+  padding: 2%;
+  border-radius: 10px;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+  font-weight: 500;
+
+}
+
+.group-link:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .sectionThree{
@@ -323,6 +342,7 @@ async fetchGroups() {
   align-items: center;
   width: 100vw;
   box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
 }
 
 /* ------------------------Knapp/gå med grupp ----------------------------------------*/

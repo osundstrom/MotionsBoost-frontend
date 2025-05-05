@@ -49,7 +49,7 @@ console.log(logo);
         <ul class="dropdown-menu dropdown-menu-list">
           <li><RouterLink class="dropdown-item oneItem" to="/profil">Min sida</RouterLink></li>
           <li><RouterLink class="dropdown-item oneItem" to="/creategroup">Skapa grupp</RouterLink></li>
-          <li><RouterLink class="dropdown-item oneItem" href="#">Inställningar</RouterLink></li>
+          <li><RouterLink class="dropdown-item oneItem" to="/settings">Inställningar</RouterLink></li>
           <li><a class="dropdown-item oneItem" href="#">Information</a></li>
         </ul>
       </div>
