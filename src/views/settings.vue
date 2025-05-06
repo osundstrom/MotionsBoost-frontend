@@ -137,9 +137,70 @@ async editUser() {
     errorDivUser.textContent = "Kund ej uppdatera uppgifterna.";
     this.loading = false;
   }
+},
+
+
+//------------------------------------Radera konto-----------------------------------------//
+popupDelete() {
+   if (window.confirm("Är du säker att du vill radera kontot?")) {
+    this.deleteAccount();
+  } else {
+    console.log("Avruten radering");
+  }
+  
+},
+
+
+async deleteAccount() {
+  this.loading = true;
+  let errorDivUser = document.getElementById("errorDivUser");
+  if (errorDivUser) errorDivUser.textContent = ""; 
+
+  try {
+    const token = sessionStorage.getItem("token");
+    if (!token) {
+      console.error("Ingen token hittades. Kan inte radera konto.");
+      if (errorDivUser) errorDivUser.textContent = "Autentiseringstoken saknas. Logga in igen.";
+      this.loading = false;
+      return;
+    }
+
+    const response = await fetch("http://localhost:3000/auth/deleteUser", { 
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+
+    if (response.ok) {
+      alert("Konto raderat!"); 
+
+      sessionStorage.removeItem("token");
+      sessionStorage.removeItem("user");
+      sessionStorage.removeItem("email");
+      sessionStorage.removeItem("imageUrl");
+    
+      this.$router.push("/"); 
+    } else {
+      alert(`Kunde inte radera kontot: ${errorData.message}`);
+    }
+  } catch (error) {
+    console.error("Fel vid radering av konto:", error);
+    if (errorDivUser) errorDivUser.textContent = "Fel vid radering av konto.";  
+  } finally {
+    this.loading = false;
+  }
 }
 
+
+
+
+
+
+
 },
+
+
 
 }
 
@@ -163,7 +224,7 @@ async editUser() {
 
 
   <!-- Sektion profil-->
-  <div class="sectionOne container d-flex align-items-start justify-content-center">
+  <div class="sectionOne container d-flex align-items-center justify-content-center">
 
   <div class="row w-100">
     <h1 class="h1Class">Inställningar</h1>
@@ -171,7 +232,7 @@ async editUser() {
     
 
   <!-- Profil bild -->
-  <div class="imagePic col-12 col-md-4 d-flex justify-content-center align-items-center">
+  <div class="imagePic d-flex justify-content-center align-items-center">
     
 
  <!-- om laddat upp profilbild -->
@@ -206,20 +267,9 @@ async editUser() {
   <div class="row w-100">
 
 <!-- Uppgifter ändra -->
-<div class="contentChange col-12 col-md-4 d-flex flex-column align-items-left">
+<div class="contentChange container col-12 col-md-4 d-flex flex-column align-items-left">
 
-    <div class="form-check form-switch dark-mode-switch">
-  <span class="switch-label-light">Ljust</span>
-
-  <input
-    class="form-check-input"
-    type="checkbox"
-    id="darkModeSwitch"
-    v-model="isDarkMode"
-    @change="applyDarkMode"
-    />
-  <span class="switch-label-dark">Mörkt</span>
-</div>
+   
 
 <h3>Ändra uppgifter</h3>
 
@@ -258,6 +308,21 @@ async editUser() {
 
   <!-- Spara Button -->
   <button class="btn btn-success mt-3" @click="editUser">Spara</button>
+
+  <div class=" container d-flex justify-content-center">
+  <div class="form-check form-switch dark-mode-switch ">
+  <span class="switch-label-light">Ljust</span>
+
+  <input
+    class="form-check-input"
+    type="checkbox"
+    id="darkModeSwitch"
+    v-model="isDarkMode"
+    @change="applyDarkMode"
+    />
+  <span class="switch-label-dark">Mörkt</span>
+</div>
+</div>
 </div>
 
 
@@ -270,7 +335,9 @@ async editUser() {
 
 
  <!-- radera konto-->
-<div class="sectionThree">
+<div class="sectionThree" @click="popupDelete">
+  
+    Radera konto
   
 </div>
 
@@ -286,7 +353,7 @@ async editUser() {
 }
 
 .h1Class { 
-    
+    text-align: center;
     margin-bottom: 3vh;
     
  
@@ -329,9 +396,6 @@ async editUser() {
 
 
 
-
-
-
 /* ------------------------sektion radera ----------------------------------------*/
 
 
@@ -340,12 +404,22 @@ async editUser() {
   min-height: 10vh;
   background-color: #f74747ad;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   flex-direction: column;
   align-items: center;
-  width: 100vw;
+  width: 100%;
   box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
   text-decoration: none;
+  font-weight: 900;
+  font-size: 150%;
+}
+
+.sectionThree:hover{
+  background-color: #f74747;
+  cursor: pointer;
+  color: white;
+  font-weight: bolder;
+  text-decoration: underline;
 }
 
 
@@ -363,7 +437,7 @@ async editUser() {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;  
+  z-index: 871;  
 }
 
 .spinner-border {
@@ -407,33 +481,34 @@ async editUser() {
   display: flex;
   align-items: center;
   margin-bottom: 1vh;
-  position: relative;
-  z-index: 0;
+  gap: 1rem;
+  margin-top: 3vh;
+  margin-right: 1.5vw;
+  
 }
 
 .switch-label-dark {
   font-size: 1rem;
   font-weight: bold;
-  position: relative;
-  z-index: 1;
-  margin-left: 1vw;
+  
+  
 }
 
 .switch-label-light {
   font-size: 1rem;
   font-weight: bold;
-  position: relative;
-  z-index: 1;
-  margin-right: 3.5vw;
+  
+  
 }
-
-
 
 
 .form-switch .form-check-input {
   width: 4em; 
   height: 1.75em; 
   cursor: pointer;
+  margin-left: 0;
+  margin-right: 0;
+  
 }
 
 

@@ -28,7 +28,7 @@
 
 footer{
     position: relative;
-    width: 100vw;
+    width: 100%;
     margin-top: 0;
     bottom: 0;
     box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);

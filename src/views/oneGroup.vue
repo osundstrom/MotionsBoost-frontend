@@ -130,7 +130,58 @@ export default {
     }
   
 
-}
+},
+
+//------------------------- Radera grupp--------------------------------------//
+
+popupDeleteGroup() {
+    if (window.confirm(`Är du säker på att du vill radera din grupp: "${this.groupDetails?.groupName}"?`)) {
+      this.deleteGroup();
+    } else {
+      console.log("Radering avbuten");
+    }
+  },
+
+
+  async deleteGroup() {
+    if (this.groupDetails?.groupRole !== "owner") {
+      console.error("Endast ägaren kan radera gruppen.");
+      alert("Endast ägaren kan radera grupp");
+      return;
+    }
+
+    this.loading = true;
+    try {
+      const token = sessionStorage.getItem("token");
+      if (!token) {
+        console.error("Ingen token");
+        alert("Ej autensierad, logga in på nytt");
+        this.loading = false;
+        return;
+      }
+
+      const response = await fetch(`http://localhost:3000/groups/${this.groupId}/delete`, { 
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        alert(`Gruppen "${this.groupDetails?.groupName}" har raderats.`);
+        this.$router.push("/profil");
+      } 
+
+    } catch (error) {
+      console.error(error);
+      alert("kunde ej radera gruppen, försök igen senare.");
+    } finally {
+      this.loading = false;
+    }
+  }
+
+
+
 },
  //-------------------------computed --------------------------------------//
 
@@ -179,8 +230,26 @@ export default {
      
 
   <!-- Sektion ett-->
-  <div class="sectionOne">
-    <h1>{{ groupDetails?.groupName }}</h1>
+  <div  class="sectionOne">
+    
+
+    
+    
+      <div class="d-flex justify-content-center align-items-center mb-3">
+      <h1 class="mb-0 me-3">{{ groupDetails?.groupName }}</h1>
+      
+    <button 
+        v-if="groupDetails?.groupRole === 'owner'"
+        @click="popupDeleteGroup"
+        class="btn btn-danger btn-sm"
+        title="Radera grupp"
+        style="margin-top: 0.5vw;"
+      >
+        <i class="fa-solid fa-trash"></i> 
+      </button>
+    </div>
+    
+  
     
       <div>
         <h5>{{ groupDetails?.info }}</h5>
@@ -295,9 +364,11 @@ export default {
 .sectionOne{
  min-height: 14vh;
  text-align: center;
- 
+ width: 100%;
 
 }
+
+
 
 /* ----------------------- challenge  ----------------------------------------*/
 
@@ -309,7 +380,7 @@ export default {
   justify-content: flex-start;
   flex-direction: column;
   align-items: center;
-  width: 100vw;
+  width: 100%;
   box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
   padding-bottom: 1vh;
 
@@ -407,7 +478,7 @@ export default {
   justify-content: flex-start;
   flex-direction: column;
   align-items: center;
-  width: 100vw;
+  width: 100%;
   box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
   li{
     list-style-type: none;

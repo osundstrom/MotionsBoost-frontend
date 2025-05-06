@@ -43,10 +43,12 @@ export default {
                 const data = await response.json();
 
                 if (!response.ok) {
-                    console.error("Fel vid skapande av grupp:", data.message);
-                    errorDiv.textContent = "Kunde ej skapa grupp";
+                    console.error("Fel vid skapande av grupp:", data.error);
+                    errorDiv.textContent = data.message;
                     throw new Error(data.message || "Kunde ej skapa gruppen");
                 }
+
+                
 
                 console.log("Grupp skapad:", data);
                 alert("Grupp skapad");
@@ -62,7 +64,7 @@ export default {
                 console.error(error);
                 
                 if (errorDiv) {
-                    errorDiv.textContent = error.message;
+                    errorDiv.textContent = "Fel vid skapande av grupp: ";
                 }
             }
         },
@@ -109,7 +111,6 @@ export default {
 
 .SectionOne{
     margin-top: 10vh;
-    color: rgb(0, 0, 0);
     text-align: center;
     min-height: 10vh;
     
