@@ -271,7 +271,7 @@ async fetchGroups() {
 }
 
 .profile-pic {
-  min-width: 20vw;
+  min-width: 20%;
   object-fit: cover;  
   max-height: 30vh;
 }
@@ -350,29 +350,31 @@ async fetchGroups() {
 
 .toggle-code-btn {
   position: absolute;
-  top: 8vh;
-  right: 1vw;
+  top: 80px;
+  right: 22px;
   padding: 4px 10px;
   font-size: 1.2rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 
 .groupcodeInput{
-  width: 300px;
+  width: 100%;
 }
 
 
 .group-code-box {
-  
+  color: black;
   position: absolute;
-  top: 10vh;
-  right: 5vw;
-  background: white;
-  padding: 10px;
+  top: 90px;
+  right: 65px;
+  background-color: #ffffff;
+  padding: 15px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   z-index: 1000;
   width: 250px;
+  box-sizing: border-box;
 }
 
 /* ------------------------Spinner ----------------------------------------*/

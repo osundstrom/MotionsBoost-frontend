@@ -399,7 +399,7 @@ async checkChallengeStatus() {
   justify-content: flex-start;
   flex-direction: column;
   align-items: center;
-  width: 100vw;
+  width: 100%;
   box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
   li{
     list-style-type: none;
@@ -407,7 +407,7 @@ async checkChallengeStatus() {
     align-items: center;
   }
   img{
-    width: 40px;
+  width: 40px;
   height: 40px;
   border-radius: 50%; 
   margin-right: 15px; 
