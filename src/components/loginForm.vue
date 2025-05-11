@@ -70,6 +70,11 @@ methods: {
             console.error(error);
             errorDiv.textContent = "Felaktig epost/lösenord";   
         }
+    },
+
+    loginWithGoogle() {
+      
+      window.location.href = "http://localhost:3000/auth/google";
     }
 
 }
@@ -101,6 +106,16 @@ methods: {
 
         
         <button type="button" class="btn btn-secondary w-45" @click="goToRegister">Skapa konto</button>
+      </div>
+
+      <div class="mt-3 d-flex flex-column align-items-center">
+        
+        <hr/>
+
+        <button type="button" class="btn btn-danger w-100 mb-2" @click="loginWithGoogle">
+          <i class="fab fa-google me-2"></i> Logga in med Google
+        </button>
+       
       </div>
             
 </form>

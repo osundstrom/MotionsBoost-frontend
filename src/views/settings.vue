@@ -20,6 +20,23 @@ export default {
     };
   },
 
+  computed: {
+    corrImgUrl() {
+      if (!this.imageUrl || this.imageUrl === 'null' || this.imageUrl === '') {
+        return null; 
+      }
+      if (this.imageUrl.startsWith("http://") || this.imageUrl.startsWith("https://")) {
+        return this.imageUrl; 
+      } 
+      if(this.imageUrl.startsWith("/uploads")) {
+        return `http://localhost:3000${this.imageUrl}`
+      }
+      console.warn("vad är detta för länk??", this.imageUrl);
+      return null;
+    
+    }
+  },
+
 
   async mounted() {
    this.applyDarkMode();
@@ -237,8 +254,8 @@ async deleteAccount() {
 
  <!-- om laddat upp profilbild -->
   <img
-    v-if="imageUrl && imageUrl !== 'null' && imageUrl !== ''"
-    :src="`http://localhost:3000${imageUrl}`"
+    v-if="corrImgUrl"
+    :src=corrImgUrl
     class="img-fluid rounded profile-pic"
     alt="Profil bild"
   >

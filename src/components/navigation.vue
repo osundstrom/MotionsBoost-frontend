@@ -18,6 +18,23 @@ console.log(logo);
         };
       },
 
+      computed: {
+    corrImgUrl() {
+      if (!this.imageUrl || this.imageUrl === 'null' || this.imageUrl === '') {
+        return null; 
+      }
+      if (this.imageUrl.startsWith("http://") || this.imageUrl.startsWith("https://")) {
+        return this.imageUrl; 
+      } 
+      if(this.imageUrl.startsWith("/uploads")) {
+        return `http://localhost:3000${this.imageUrl}`
+      }
+      console.warn("vad är detta för länk??", this.imageUrl);
+      return null;
+    
+    }
+  },
+
     methods: {
       
       //funktion utlogg
@@ -62,8 +79,8 @@ console.log(logo);
   <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <!-- om laddat upp profilbild -->
     <img
-      v-if="imageUrl && imageUrl !== 'null' && imageUrl !== ''"
-      :src="`http://localhost:3000${imageUrl}`"
+      v-if="corrImgUrl"
+      :src=corrImgUrl
       alt="Avatar"
       class="rounded-circle"
       width="40"
