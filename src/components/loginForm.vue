@@ -50,7 +50,6 @@ methods: {
 
         console.log(data);
 
-        //console.log("token:", data.recivedToken.token);
 
         //Sparar token i sessionStorage
         sessionStorage.setItem("token", data.jwtToken);

@@ -1,6 +1,13 @@
 <script>
   export default {
     name: "OauthLogin",
+
+
+    data() {
+      return {
+        loading: true, 
+      };
+    },
     mounted() {
       const urlParams = new URLSearchParams(window.location.search);
       const token = urlParams.get('token');
@@ -25,41 +32,49 @@
   
           // Omdirigera till profilsidan
           this.$router.push("/profil");
+          loading = false;
         } catch (error) {
-          console.error("Fel vid bearbetning av OAuth callback data:", error);
-          // Omdirigera till inloggningssidan med ett felmeddelande
-          this.$router.push("/login?error=oauth_processing_failed");
+        
+          this.$router.push("/login");
+          loading = false;
         }
       } else {
-        console.error("OAuth callback saknar token eller payload.");
-        // Omdirigera till inloggningssidan med ett felmeddelande
-        this.$router.push("/login?error=oauth_missing_data");
+        this.$router.push("/login");
+        loading = false;
       }
+      loading = false;
     }
+    
   };
   </script>
 
 
 <template>
-    <div class="loading-container">
-      <p>Försöker logga in</p>
+      <div v-if="loading" class="loading-overlay">
       <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Laddar ......</span>
+        <span class="visually-hidden">Loading...</span>
       </div>
     </div>
+
   </template>
   
   <style scoped>
-  .loading-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 80vh;
-    text-align: center;
-  }
-  .spinner-border {
-    width: 3rem;
-    height: 3rem;
-  }
+ .loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;  
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+  border-width: 0.5rem;
+}
   </style>
