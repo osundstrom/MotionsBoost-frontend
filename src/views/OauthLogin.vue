@@ -9,6 +9,7 @@
       };
     },
     mounted() {
+       this.loading = true;
       const urlParams = new URLSearchParams(window.location.search);
       const token = urlParams.get('token');
       const encodedPayload = urlParams.get('payload');
@@ -32,17 +33,17 @@
   
           // Omdirigera till profilsidan
           this.$router.push("/profil");
-          loading = false;
+          this.loading = false;
         } catch (error) {
         
           this.$router.push("/login");
-          loading = false;
+          this.loading = false;
         }
       } else {
         this.$router.push("/login");
-        loading = false;
+        this.loading = false;
       }
-      loading = false;
+      this.loading = false;
     }
     
   };

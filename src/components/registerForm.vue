@@ -111,7 +111,7 @@ methods: {
         
         <div class="d-flex justify-content-between">
         
-        <button type="submit" class="btn btn-primary w-45">skapa konto</button>
+        <button type="submit" class="btn btn-primary w-45">Skapa konto</button>
 
         
         <button type="button" class="btn btn-secondary w-45" @click="goToLogin">Har du redan ett konto?</button>
@@ -145,6 +145,10 @@ methods: {
     color: white;
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
     
+}
+
+button:hover{
+  text-decoration: underline;
 }
 
 

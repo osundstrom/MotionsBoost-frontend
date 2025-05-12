@@ -324,7 +324,7 @@ async fetchGroups() {
   justify-content: flex-start;
   flex-direction: column;
   align-items: center;
-  width: 100vw;
+  width: 100%;
   box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
   text-decoration: none;
   
@@ -357,7 +357,7 @@ async fetchGroups() {
   justify-content: flex-start;
   flex-direction: column;
   align-items: center;
-  width: 100vw;
+  width: 100%;
   box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
   text-decoration: none;
 }

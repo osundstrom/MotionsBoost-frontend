@@ -171,6 +171,21 @@ async checkChallengeStatus() {
     }
   },
 
+  corrImgUrl(imageUrl) {
+      if (!imageUrl || imageUrl === 'null' || imageUrl === '') {
+        return null; 
+      }
+      if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
+        return imageUrl; 
+      } 
+      if(imageUrl.startsWith("/uploads")) {
+        return `http://localhost:3000${imageUrl}`
+      }
+      console.warn("vad är detta för länk??", imageUrl);
+      return null;
+    
+    },
+
 },
 
 
@@ -283,15 +298,15 @@ async checkChallengeStatus() {
               <div class="member-info">
                
                 <img
-            v-if="entry.user.imageUrl && entry.user.imageUrl !== 'null' && entry.user.imageUrl !== ''"
-            :src="`http://localhost:3000${entry.user.imageUrl}`"
-            alt="Profile Image"
+            v-if="corrImgUrl(entry.user.imageUrl)"
+            :src=corrImgUrl(entry.user.imageUrl)
+            alt="Profil bild"
             class="profile-image"
             />
           <img
           v-else
           src="../assets/standardProfile.jpg"
-          alt="Default Profile Image"
+          alt="Default Profil bild"
           class="profile-image"
             />
                 <div class="member-details">

@@ -64,10 +64,10 @@ console.log(logo);
           <i class="fa-solid fa-bars fs-2"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-list">
-          <li><RouterLink class="dropdown-item oneItem" to="/profil">Min sida</RouterLink></li>
-          <li><RouterLink class="dropdown-item oneItem" to="/creategroup">Skapa grupp</RouterLink></li>
-          <li><RouterLink class="dropdown-item oneItem" to="/settings">Inställningar</RouterLink></li>
-          <li><a class="dropdown-item oneItem" href="#">Information</a></li>
+          <li><RouterLink class="dropdown-item oneItem" to="/profil"><i class="fa-solid fa-user"></i> Min sida</RouterLink></li>
+          <li><RouterLink class="dropdown-item oneItem" to="/creategroup"><i class="fa-solid fa-square-plus"></i> Skapa grupp</RouterLink></li>
+          <li><RouterLink class="dropdown-item oneItem" to="/settings"><i class="fa-solid fa-gear"></i> Inställningar</RouterLink></li>
+          <li><a class="dropdown-item oneItem" href="#"><i class="fa-solid fa-circle-info"></i> Information</a></li>
         </ul>
       </div>
 
@@ -98,7 +98,7 @@ console.log(logo);
   </a>
   <ul class="dropdown-menu dropdown-menu-end">
     <li>
-      <a class="dropdown-item dropdown-logout" @click="logout">Logga ut</a>
+      <a class="dropdown-item dropdown-logout" @click="logout"> <i class="fa-solid fa-right-from-bracket"></i> Logga ut </a>
     </li>
   </ul>
 </div>
@@ -129,15 +129,18 @@ console.log(logo);
     background-color: rgba(245, 102, 102, 0.726);
     text-align: center;
     z-index: 1;
-    
+    font-weight: bolder;    
   }
 
   .dropdown-item:hover{
-      text-decoration: underline;
+      color: white;
+      i{
+        color: white;
+      }
     }
   
   .dropdown-logout:hover {
-    background-color: #f55959;   
+    background-color: #f53939;   
   }
 
   .dropdown i {

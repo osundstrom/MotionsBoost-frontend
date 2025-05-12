@@ -92,7 +92,7 @@ methods: {
     <!-- Formulär inloggning -->
   <div class="mb-3">
     <label for="InputEmail" class="form-label">Epost</label>
-    <input type="email" class="form-control" id="InputEmail" aria-describedby="emailHelp" placeholder="name@example.com">
+    <input type="email" class="form-control" id="InputEmail" aria-describedby="emailHelp" placeholder="Example@example.com">
   </div>
         <div class="mb-3">
             <label for="InputPassword" class="form-label">Lösenord</label>
@@ -111,8 +111,8 @@ methods: {
         
         <hr/>
 
-        <button type="button" class="btn btn-danger w-100 mb-2" @click="loginWithGoogle">
-          <i class="fab fa-google me-2"></i> Logga in med Google
+        <button type="button" class="btn btn-danger w-100 mb-1" @click="loginWithGoogle">
+          <i class="fab fa-google me-1"></i> Google
         </button>
        
       </div>
@@ -138,6 +138,9 @@ methods: {
         @media (min-width: 750px) {
         width: 40vw;
     }
+    @media (max-width: 750px) {
+        width: 90vw;
+    }
     }
   
 
@@ -145,6 +148,10 @@ methods: {
     color: white;
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
     
+}
+
+button:hover{
+  text-decoration: underline;
 }
 
 

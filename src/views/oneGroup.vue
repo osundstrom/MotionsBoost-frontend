@@ -178,7 +178,22 @@ popupDeleteGroup() {
     } finally {
       this.loading = false;
     }
-  }
+  },
+
+  corrImgUrl(imageUrl) {
+      if (!imageUrl || imageUrl === 'null' || imageUrl === '') {
+        return null; 
+      }
+      if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
+        return imageUrl; 
+      } 
+      if(imageUrl.startsWith("/uploads")) {
+        return `http://localhost:3000${imageUrl}`
+      }
+      console.warn("vad är detta för länk??", imageUrl);
+      return null;
+    
+    }
 
 
 
@@ -196,7 +211,10 @@ popupDeleteGroup() {
     return this.groupChallenges.slice().sort((b, a) => {
       return new Date(a.challengeCreatedAt) - new Date(b.challengeCreatedAt);
     });
-  }
+  },
+
+   
+  
 
  },
 
@@ -253,12 +271,13 @@ popupDeleteGroup() {
     
       <div>
         <h5>{{ groupDetails?.info }}</h5>
-
+        <p>Gruppen har tagit <b><u>{{ groupDetails.totalSteps }}</u></b> steg totalt</p>
         <div class="codeJoin" v-if="groupDetails?.groupRole === 'owner'">
         <h5>Kod: {{ groupId }}</h5>
         <p>Ge koden till alla du vill bjuda in</p>
         
         </div>
+        
     </div>
 
     
@@ -318,9 +337,9 @@ popupDeleteGroup() {
       <li v-for="(member, index) in sortMemberSteps" :key="index">
         <div class="member-info">
           <img
-            v-if="member.imageUrl && member.imageUrl !== 'null' && member.imageUrl !== ''"
-            :src="`http://localhost:3000${member.imageUrl}`"
-            alt="Profile Image"
+            v-if=corrImgUrl(member.imageUrl)
+            :src="corrImgUrl(member.imageUrl)"
+            alt="Profil bild"
             class="profile-image"
             />
           <img
