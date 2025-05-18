@@ -11,24 +11,20 @@ const router = createRouter({
       name: 'login',
       component: LoginView,
     },
-
     {
       path: '/register',
       name: 'register',
       component: RegisterView,
     },
-
     {
       path: '/profil',
       name: 'profil',
       component: () => import('../views/ProfilView.vue'),
       beforeEnter: (to, from, next) => {
-        
         const token = sessionStorage.getItem("token");
         if (token) {
           next();
         } else {
-          
           next("/");
         }
       },
@@ -39,12 +35,12 @@ const router = createRouter({
       name: 'creategroup',
       component: () => import('../views/createGroupView.vue'),
       beforeEnter: (to, from, next) => {
-        
+
         const token = sessionStorage.getItem("token");
         if (token) {
           next();
         } else {
-          
+
           next("/");
         }
       },
@@ -56,12 +52,12 @@ const router = createRouter({
       component: () => import('../views/createChallengeView.vue'),
       props: true,
       beforeEnter: (to, from, next) => {
-        
+
         const token = sessionStorage.getItem("token");
         if (token) {
           next();
         } else {
-          
+
           next("/");
         }
       },
@@ -73,12 +69,12 @@ const router = createRouter({
       component: () => import('../views/oneGroup.vue'),
       props: true,
       beforeEnter: (to, from, next) => {
-        
+
         const token = sessionStorage.getItem("token");
         if (token) {
           next();
         } else {
-          
+
           next("/");
         }
       },
@@ -90,12 +86,12 @@ const router = createRouter({
       component: () => import('../views/oneChallenge.vue'),
       props: true,
       beforeEnter: (to, from, next) => {
-        
+
         const token = sessionStorage.getItem("token");
         if (token) {
           next();
         } else {
-          
+
           next("/");
         }
       },
@@ -107,22 +103,22 @@ const router = createRouter({
       component: () => import('../views/settings.vue'),
       props: true,
       beforeEnter: (to, from, next) => {
-        
+
         const token = sessionStorage.getItem("token");
         if (token) {
           next();
         } else {
-          
+
           next("/");
         }
       },
     },
 
     {
-    path: '/oauth/login',
-    name: 'oauthLogin',
-    component: OauthLogin
-  },
+      path: '/oauth/login',
+      name: 'oauthLogin',
+      component: OauthLogin
+    },
 
 
 

@@ -15,7 +15,4 @@ import footerComponenet from './components/footer.vue';
 
 <style scoped>
 
-
-
-
 </style>
