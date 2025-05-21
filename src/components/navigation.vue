@@ -29,7 +29,7 @@ console.log(logo);
       if(this.imageUrl.startsWith("/uploads")) {
         return `http://localhost:3000${this.imageUrl}`
       }
-      console.warn("vad är detta för länk??", this.imageUrl);
+      console.error("vad är detta för länk??", this.imageUrl);
       return null;
     
     }
@@ -67,12 +67,12 @@ console.log(logo);
           <li><RouterLink class="dropdown-item oneItem" to="/profil"><i class="fa-solid fa-user"></i> Min sida</RouterLink></li>
           <li><RouterLink class="dropdown-item oneItem" to="/creategroup"><i class="fa-solid fa-square-plus"></i> Skapa grupp</RouterLink></li>
           <li><RouterLink class="dropdown-item oneItem" to="/settings"><i class="fa-solid fa-gear"></i> Inställningar</RouterLink></li>
-          <li><a class="dropdown-item oneItem" href="#"><i class="fa-solid fa-circle-info"></i> Information</a></li>
+          <li><RouterLink class="dropdown-item oneItem" to="/information"><i class="fa-solid fa-circle-info"></i> Information</RouterLink></li>
         </ul>
       </div>
 
       <!-- logo -->
-      <img src="../assets/logomb.png" alt="Logo" class="navbar-logo">
+      <img src="../assets/logomb.png" alt="Logo bild" class="navbar-logo">
 
      <!-- Avatar med logout -->
 <div class="dropdown">

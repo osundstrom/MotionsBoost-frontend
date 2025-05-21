@@ -22,8 +22,14 @@ export default {
       const email = document.getElementById("InputEmail").value;
       const password = document.getElementById("InputPassword").value;
       const file = document.getElementById("InputImage").files[0];
+      const gdprCheckbox = document.getElementById("gdprCheckbox").checked;
       let errorDiv = document.getElementById("errorDiv"); 
       errorDiv.textContent = ""; 
+
+      if (!gdprCheckbox) { // Validera GDPR-kryssrutan
+        errorDiv.textContent = "Du måste godkänna GDPR och användarvillkoren för att registrera dig.";
+        return;
+      }
 
       try {
         const formData = new FormData();
@@ -96,6 +102,11 @@ export default {
         <input type="password" class="form-control" id="InputPassword" placeholder="Lösenord">
       </div>
 
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="gdprCheckbox">
+        <label style="text-shadow: none; color: black;" class="form-check-label" for="gdprCheckbox">Jag godkänner hantering av mina uppgifter i enlighet med <a href="https://www.imy.se/verksamhet/dataskydd/det-har-galler-enligt-gdpr/">GDPR</a></label>
+      </div>
+
       <div class="d-flex justify-content-between">
 
         <button type="submit" class="btn btn-primary w-45">Skapa konto</button>
@@ -126,6 +137,24 @@ form {
   }
 }
 
+.form-check {
+  a{
+    color: blue;
+    text-decoration: underline;
+  }
+  a:hover{
+    color: #000000;
+    text-shadow: -1px -1px 0 #ffffff00, 1px -1px 0 #ffffff00, -1px 1px 0 #ffffff00, 1px 1px #ffffff00;
+    font-weight: bolder;
+  }
+  input{
+    margin-right: 1%;
+    cursor: pointer;
+  }
+  
+  
+}
+
 
 #fullform {
   color: white;
@@ -143,7 +172,9 @@ button:hover {
   font-size: larger;
   display: flex;
   justify-content: center;
-  color: white;
-  text-shadow: -1px -1px 0 #ff0000, 1px -1px 0 #ff0000, -1px 1px 0 #ff0000, 1px 1px 0 #ff0000;
+  color: rgb(0, 0, 0);
+  text-shadow: -1px -1px 0 #f80707, 1px -1px 0 #f80707, -1px 1px 0 #f80707, 1px 1px 0 #f80707;
+  font-weight: bolder;
+  
 }
 </style>

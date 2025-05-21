@@ -20,7 +20,7 @@ export default {
 
   computed: {
     corrImgUrl() {
-      if (!this.imageUrl || this.imageUrl === 'null' || this.imageUrl === '') {
+      if (!this.imageUrl || this.imageUrl === "null" || this.imageUrl === "") {
         return null; 
       }
       if (this.imageUrl.startsWith("http://") || this.imageUrl.startsWith("https://")) {
@@ -29,9 +29,8 @@ export default {
       if(this.imageUrl.startsWith("/uploads")) {
         return `http://localhost:3000${this.imageUrl}`
       }
-      console.warn("vad är detta för länk??", this.imageUrl);
+      console.error("Ogiltig bild länk", this.imageUrl);
       return null;
-    
     }
   },
 
@@ -53,9 +52,8 @@ export default {
       
       this.loading = true; 
       try {
-        const token = sessionStorage.getItem("token");
         const userId = sessionStorage.getItem("userId");
-        console.log("Token:", token);
+        const token = sessionStorage.getItem("token");
         const response = await fetch("http://localhost:3000/users/usersteps", {
           method: "GET",
           headers: {

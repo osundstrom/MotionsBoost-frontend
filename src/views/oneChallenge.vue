@@ -3,21 +3,21 @@ import navigation from '../components/navigation.vue'
 
 
 export default {
-    props: ['groupId', "challengeId"],
+  props: ['groupId', "challengeId"],
   components: { navigation },
 
   data() {
     return {
 
-        challengeDetails: null,
-        loading: true,
-        leaderboard: [],
-        currentTotalSteps: 0,
-        ActiveUserId: sessionStorage.getItem("userId"),
-        stepsToAdd: null,
-        errorMessage: null,
-        
-      
+      challengeDetails: null,
+      loading: true,
+      leaderboard: [],
+      currentTotalSteps: 0,
+      ActiveUserId: sessionStorage.getItem("userId"),
+      stepsToAdd: null,
+      errorMessage: null,
+
+
     };
   },
 
@@ -28,16 +28,16 @@ export default {
 
     await this.fetchChallengeInfo();;
     await this.fetchChallengeLeaderboard();
-    await this.checkChallengeStatus(); 
+    await this.checkChallengeStatus();
   },
 
- 
+
 
   methods: {
     //------------------------- fetch challnge info--------------------------------------//
     async fetchChallengeInfo() {
-      
-      this.loading = true; 
+
+      this.loading = true;
       this.errorMessage = null;
 
       try {
@@ -59,7 +59,7 @@ export default {
           const data = await response.json();
           this.challengeDetails = data;
 
-          
+
 
         } else {
           console.error("kunde ej hämta utmaninigens information");
@@ -67,12 +67,12 @@ export default {
       } catch (error) {
         console.error(error);
       }
-      
-        this.loading = false;
+
+      this.loading = false;
     },
-//------------------------- fetch leaderboard--------------------------------------//
+    //------------------------- fetch leaderboard--------------------------------------//
     async fetchChallengeLeaderboard() {
-      
+
       this.errorMessage = null;
       try {
         const token = sessionStorage.getItem("token");
@@ -97,104 +97,104 @@ export default {
         }
       } catch (error) {
         console.error(error);
-      }finally {
-        this.loading = false; 
+      } finally {
+        this.loading = false;
       }
     },
 
-//------------------------- add steps--------------------------------------//
+    //------------------------- add steps--------------------------------------//
     async addSteps() {
-      
 
-      this.loading = true; 
-      this.errorMessage = null; 
+
+      this.loading = true;
+      this.errorMessage = null;
 
       try {
         const token = sessionStorage.getItem("token");
-        const response = await fetch(`http://localhost:3000/challengeusers/${this.challengeId}/addsteps`, { 
+        const response = await fetch(`http://localhost:3000/challengeusers/${this.challengeId}/addsteps`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`,
           },
-          body: JSON.stringify({ steps: this.stepsToAdd }), 
+          body: JSON.stringify({ steps: this.stepsToAdd }),
         });
 
         if (response.ok) {
-         
+
           this.stepsToAdd = null;
-          await this.fetchChallengeLeaderboard(); 
-          
+          await this.fetchChallengeLeaderboard();
+
 
         } else {
-          
-          
+
+
           this.errorMessage = "Kunde inte lägga till steg";
           console.error(this.errorMessage);
-          
+
         }
       } catch (error) {
-        
+
         console.error(error);
         this.errorMessage = error.message;
-        
+
       } finally {
-        this.loading = false; 
+        this.loading = false;
       }
     },
 
     //------------------------- kolla avklarad--------------------------------------//
-async checkChallengeStatus() {
-    if (this.currentTotalSteps >= this.challengeDetails.targetSteps) {
-      try {
-        const token = sessionStorage.getItem("token");
-        const response = await fetch(`http://localhost:3000/challenges/${this.challengeId}/status`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
-          },
-          body: JSON.stringify({ status: false }),
-        });
-        const data = await response.json();
-        if (response.ok) {
-          console.log("uppdaterat status");
-          console.log(data);
-          this.challengeDetails.challengeStatus = false; 
-          this.$emit("statusUpdated")
-        } else {
-          console.error("Kunde inte uppdatera  status");
+    async checkChallengeStatus() {
+      if (this.currentTotalSteps >= this.challengeDetails.targetSteps) {
+        try {
+          const token = sessionStorage.getItem("token");
+          const response = await fetch(`http://localhost:3000/challenges/${this.challengeId}/status`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify({ status: false }),
+          });
+          const data = await response.json();
+          if (response.ok) {
+            console.log("uppdaterat status");
+            console.log(data);
+            this.challengeDetails.challengeStatus = false;
+            this.$emit("statusUpdated")
+          } else {
+            console.error("Kunde inte uppdatera  status");
+          }
+        } catch (error) {
+          console.error(error);
         }
-      } catch (error) {
-        console.error(error);
       }
-    }
-  },
+    },
 
-  corrImgUrl(imageUrl) {
+    corrImgUrl(imageUrl) {
       if (!imageUrl || imageUrl === 'null' || imageUrl === '') {
-        return null; 
+        return null;
       }
       if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
-        return imageUrl; 
-      } 
-      if(imageUrl.startsWith("/uploads")) {
+        return imageUrl;
+      }
+      if (imageUrl.startsWith("/uploads")) {
         return `http://localhost:3000${imageUrl}`
       }
       console.warn("vad är detta för länk??", imageUrl);
       return null;
-    
+
     },
 
-},
+  },
 
 
 
 
-//------------------------- computed--------------------------------------//
+  //------------------------- computed--------------------------------------//
 
-    computed: {
-      targetStepsDisplay() {
+  computed: {
+    targetStepsDisplay() {
       return this.challengeDetails?.targetSteps;
 
     },
@@ -206,16 +206,16 @@ async checkChallengeStatus() {
     progressPercentage() {
       const current = this.currentTotalSteps;
       const target = this.challengeDetails.targetSteps;
-      if (target === 0) return 0; 
+      if (target === 0) return 0;
       return Math.min(Math.round((current / target) * 100), 100);
     }
 
-   
+
 
   },
 
 
-   
+
 
 }
 
@@ -229,96 +229,77 @@ async checkChallengeStatus() {
 
 <template>
   <!-- Navigation -->
-   
+
   <navigation />
   <div class="forContent">
     <div v-if="loading" class="loading-overlay">
     </div>
-   
+
     <div v-else-if="!challengeDetails" class="text-center mt-5">
-        <h2>Utmaning kunde inte laddas</h2>
-        <p>Försök igen senare.</p>
+      <h2>Utmaning kunde inte laddas</h2>
+      <p>Försök igen senare.</p>
     </div>
     <div v-else>
       <!-- Sektion ett-->
       <div class="sectionOne">
         <h1>{{ challengeDetails.challengeName }}</h1>
         <div>
-          
+
           <!-- Progress Bar -->
           <div class="progress-container">
             <h5>Steg: {{ currentStepsDisplay }} / {{ targetStepsDisplay }}</h5>
             <div class="progress">
-      <div
-        class="progress-bar"
-        :class="{ orange: progressPercentage < 100, green: progressPercentage === 100 }"
-        role="progressbar"
-        :style="{ width: progressPercentage + '%' }"
-        :aria-valuenow="progressPercentage"
-        aria-valuemin="0"
-        aria-valuemax="100"
-  >
-    {{ progressPercentage }}%
-  </div>
-</div>
+              <div class="progress-bar" :class="{ orange: progressPercentage < 100, green: progressPercentage === 100 }"
+                role="progressbar" :style="{ width: progressPercentage + '%' }" :aria-valuenow="progressPercentage"
+                aria-valuemin="0" aria-valuemax="100">
+                {{ progressPercentage }}%
+              </div>
+            </div>
           </div>
         </div>
 
         <div v-if="challengeDetails.challengeStatus === false" class="completion-message">
-        <h3 class="text-success">Utmaningen är avklarad!</h3>
-      </div>
+          <h3 style="color: darkgreen;">Utmaningen är avklarad!</h3>
+        </div>
 
         <!-- Lägg till steg -->
         <div class="add-steps-container">
           <div class="add-steps-form">
-            <input
-              type="number"
-              min="1"
-              class="form-control"
-              placeholder="Ange antal steg att lägga till"
-              v-model.number="stepsToAdd" 
-            />
+            <input type="number" min="1" class="form-control" aria-label="Addera steg" placeholder="Ange antal steg att lägga till"
+              v-model.number="stepsToAdd" />
             <button class="btn btn-success mt-2" @click="addSteps">Lägg till steg</button>
           </div>
         </div>
       </div>
 
-       <!-- Sektion två-->
+      <!-- Sektion två-->
       <div class="sectionTwo">
         <h2>Antal steg</h2>
-        
+
         <div v-if="leaderboard.length === 0">
           <p>Inga steg registrerade för denna utmaning ännu.</p>
         </div>
-        
+
         <div v-else>
           <ul class="member-list">
-            
+
             <li v-for="(entry, index) in leaderboard" :key="entry.userId || index">
               <div class="member-info">
-               
-                <img
-            v-if="corrImgUrl(entry.user.imageUrl)"
-            :src=corrImgUrl(entry.user.imageUrl)
-            alt="Profil bild"
-            class="profile-image"
-            />
-          <img
-          v-else
-          src="../assets/standardProfile.jpg"
-          alt="Default Profil bild"
-          class="profile-image"
-            />
+
+                <img v-if="corrImgUrl(entry.user.imageUrl)" :src=corrImgUrl(entry.user.imageUrl) alt="Profil bild"
+                  class="profile-image" />
+                <img v-else src="../assets/standardProfile.jpg" alt="Default Profil bild" class="profile-image" />
                 <div class="member-details">
                   <div class="member-header">
                     <strong>
-                     
+
                       {{ entry.user.firstName }} {{ entry.user.lastName }}
-                      
-                      <span v-if="entry.userId === ActiveUserId" class="badge bg-info"><i class="fa-solid fa-user"></i></span>
+
+                      <span v-if="entry.userId === ActiveUserId" class="badge bg-info"><i
+                          class="fa-solid fa-user"></i></span>
                     </strong>
                   </div>
-                 
+
                   <p class="member-steps">{{ entry.stepsTaken }} steg</p>
                 </div>
               </div>
@@ -332,8 +313,6 @@ async checkChallengeStatus() {
 
 
 <style scoped>
-
-
 .forContent {
   margin-top: 10vh;
 }
@@ -368,35 +347,37 @@ async checkChallengeStatus() {
 
 /* ----------------------- sektion ett ----------------------------------------*/
 
-.sectionOne{
- min-height: 40vh;
- text-align: center;
+.sectionOne {
+  min-height: 40vh;
+  text-align: center;
 }
 
 .progress-container {
-  margin: 20px auto; 
+  margin: 20px auto;
   text-align: center;
-  max-width: 80%; 
-  
+  max-width: 80%;
+
 }
 
 .progress {
   height: 20px;
-  background-color: #e0e0e0; 
-  border-radius: 10px; 
-  overflow: hidden; 
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .progress-bar {
-  height: 100%; 
+  height: 100%;
   transition: width 0.5s ease-in-out;
+
   &.orange {
-    background-color: orange; 
+    background-color: orange;
   }
-  &.green{
-    background-color: #4caf50; 
+
+  &.green {
+    background-color: #4caf50;
   }
-  
+
 }
 
 
@@ -406,8 +387,7 @@ async checkChallengeStatus() {
 
 /* ------------------------ sektion två ----------------------------------------*/
 
-.sectionTwo
-{
+.sectionTwo {
   min-height: 42vh;
   background-color: #7e9cffab;
   display: flex;
@@ -416,22 +396,24 @@ async checkChallengeStatus() {
   align-items: center;
   width: 100%;
   box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
-  li{
+
+  li {
     list-style-type: none;
     display: flex;
     align-items: center;
   }
-  img{
-  width: 40px;
-  height: 40px;
-  border-radius: 50%; 
-  margin-right: 15px; 
-  object-fit: cover; 
-  margin-bottom: 2vh;
-  border: 1px solid #ccc;
-}
 
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 15px;
+    object-fit: cover;
+    margin-bottom: 2vh;
+    border: 1px solid #ccc;
   }
+
+}
 
 
 
@@ -453,11 +435,11 @@ async checkChallengeStatus() {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.8);  
+  background: rgba(255, 255, 255, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;  
+  z-index: 9999;
 }
 
 .spinner-border {
@@ -465,7 +447,4 @@ async checkChallengeStatus() {
   height: 3rem;
   border-width: 0.5rem;
 }
-
-
-
 </style>

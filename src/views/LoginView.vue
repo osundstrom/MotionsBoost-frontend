@@ -40,8 +40,8 @@ h1{
   text-align: center;
   padding-top: 10vh;
   font-weight: 900;
-  color: white;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  color: rgb(0, 0, 0);
+  /*text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;*/
 }
 
 </style>

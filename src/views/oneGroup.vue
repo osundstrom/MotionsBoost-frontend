@@ -271,7 +271,7 @@ popupDeleteGroup() {
     
       <div>
         <h5>{{ groupDetails?.info }}</h5>
-        <p>Gruppen har tagit <b><u>{{ groupDetails.totalSteps }}</u></b> steg totalt</p>
+        <p>Gruppen har tagit <b>{{ groupDetails.totalSteps }}</b> steg totalt</p>
         <div class="codeJoin" v-if="groupDetails?.groupRole === 'owner'">
         <h5>Kod: {{ groupId }}</h5>
         <p>Ge koden till alla du vill bjuda in</p>

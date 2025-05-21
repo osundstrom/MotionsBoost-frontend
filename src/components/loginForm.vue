@@ -75,7 +75,7 @@ export default {
       <!-- Formulär inloggning -->
       <div class="mb-3">
         <label for="InputEmail" class="form-label">Epost</label>
-        <input type="email" class="form-control" id="InputEmail" aria-describedby="emailHelp"
+        <input type="email" class="form-control" id="InputEmail" 
           placeholder="Example@example.com">
       </div>
       <div class="mb-3">
@@ -98,6 +98,7 @@ export default {
         <button type="button" class="btn btn-danger w-100 mb-1" @click="loginWithGoogle">
           <i class="fab fa-google me-1"></i> Google
         </button>
+        <p style="font-size: x-small; text-shadow: none; color: black;">Vid inlogg via Google godkänner jag hantering av mina uppgifter i enlighet med <a href="https://www.imy.se/verksamhet/dataskydd/det-har-galler-enligt-gdpr/">GDPR</a></p>
 
       </div>
 
