@@ -182,13 +182,13 @@ async fetchGroups() {
 
     <div v-else>
  <!--knapp grupp -->
-<button class="toggle-code-btn btn btn-success" @click="showGroupCodeBox = !showGroupCodeBox">
+<button class="toggleBtn btn btn-success" @click="showGroupCodeBox = !showGroupCodeBox">
   <span v-if="!showGroupCodeBox">+</span>
   <span class="btn-success" v-else>&times;</span>
 </button>
 
 <!-- grupp kod -->
-<div v-if="showGroupCodeBox" class="group-code-box">
+<div v-if="showGroupCodeBox" class="groupCodeInput">
   <label for="code" class="form-label">Ange gruppens kod</label>
   <input  type="text" class="form-control mb-2" placeholder="Ange kod" v-model="groupCode"/>
   <button class="btn btn-success btn-sm" @click="joinGroup">Gå med</button>
@@ -205,14 +205,14 @@ async fetchGroups() {
   <img
     v-if="corrImgUrl"
     :src=corrImgUrl
-    class="img-fluid rounded profile-pic"
+    class="img-fluid rounded profilePic"
     alt="Profil bild"
   >
   <!-- om ej laddat upp profilbild -->
   <img
     v-else
     src="../assets/standardProfile.jpg"
-    class="img-fluid rounded profile-pic"
+    class="img-fluid rounded profilePic"
     alt="Standard profil bild"
   >
 </div>
@@ -221,12 +221,8 @@ async fetchGroups() {
     <div class="col-12 col-md-4 d-flex flex-column justify-content-center text-center">
       <h2>{{ name }}</h2>
       <div class="mt-2">
-        <p v-if="loading">
-          <strong class="spinner-grow text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </strong>
-        </p>
-        <p v-else class="text-nowrap fs-5">Du har tagit totalt <strong>{{ totalSteps }}</strong> steg</p>
+       
+        <p class="text-nowrap fs-5">Du har tagit totalt <strong>{{ totalSteps }}</strong> steg</p>
       </div>
     </div>
   </div>
@@ -242,7 +238,7 @@ async fetchGroups() {
         v-for="group in memberGroups"
         :key="group._id"
         :to="{ name: 'oneGroup', params: { groupId: group._id } }"
-        class="group-link"
+        class="groupLink"
       >
         {{ group.groupName }}
       </router-link>
@@ -261,7 +257,7 @@ async fetchGroups() {
         v-for="group in ownedGroups"
         :key="group._id"
         :to="{ name: 'oneGroup', params: { groupId: group._id } }"
-        class="group-link"
+        class="groupLink"
       >
         {{ group.groupName }}
       </router-link>
@@ -285,7 +281,7 @@ async fetchGroups() {
  text-align: left;
 }
 
-.profile-pic {
+.profilePic {
   min-width: 20%;
   object-fit: cover;  
   max-height: 30vh;
@@ -327,7 +323,7 @@ async fetchGroups() {
   text-decoration: none;
   
 }
-.group-link{
+.groupLink{
   display: flex;
   flex-direction: column;
   text-decoration: none;
@@ -342,7 +338,7 @@ async fetchGroups() {
 
 }
 
-.group-link:hover {
+.groupLink:hover {
   background-color: #f0f0f0;
   cursor: pointer;
   text-decoration: underline;
@@ -363,7 +359,7 @@ async fetchGroups() {
 /* ------------------------Knapp/gå med grupp ----------------------------------------*/
 
 
-.toggle-code-btn {
+.toggleBtn {
   position: absolute;
   top: 80px;
   right: 22px;
@@ -378,7 +374,7 @@ async fetchGroups() {
 }
 
 
-.group-code-box {
+.groupCodeInput {
   color: black;
   position: absolute;
   top: 90px;

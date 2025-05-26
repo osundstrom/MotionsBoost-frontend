@@ -6,6 +6,7 @@ export default {
   props: ['groupId', "challengeId"],
   components: { navigation },
 
+  //------------------------- data (state)--------------------------------------//
   data() {
     return {
 
@@ -21,12 +22,12 @@ export default {
     };
   },
 
-
+  //------------------------- mounted körs direkt vid uppstart--------------------------------------//
   async mounted() {
-    console.log("GruppId:", this.groupId);
-    console.log("ChallengeId:", this.challengeId);
+    //console.log("GruppId:", this.groupId);
+    //console.log("ChallengeId:", this.challengeId);
 
-    await this.fetchChallengeInfo();;
+    await this.fetchChallengeInfo();
     await this.fetchChallengeLeaderboard();
     await this.checkChallengeStatus();
   },
@@ -42,34 +43,31 @@ export default {
 
       try {
         console.log("challengeId", this.challengeId)
-
         const token = sessionStorage.getItem("token");
-
         console.log("Token:", token);
+
         const response = await fetch(`http://localhost:3000/challenges/${this.challengeId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`,
           },
-
-        });
+      });
 
         if (response.ok) {
           const data = await response.json();
           this.challengeDetails = data;
-
-
-
         } else {
           console.error("kunde ej hämta utmaninigens information");
         }
+
       } catch (error) {
         console.error(error);
       }
 
       this.loading = false;
     },
+
     //------------------------- fetch leaderboard--------------------------------------//
     async fetchChallengeLeaderboard() {
 
@@ -102,10 +100,9 @@ export default {
       }
     },
 
-    //------------------------- add steps--------------------------------------//
+
+    //------------------------- lägga till steg--------------------------------------//
     async addSteps() {
-
-
       this.loading = true;
       this.errorMessage = null;
 
@@ -121,23 +118,14 @@ export default {
         });
 
         if (response.ok) {
-
           this.stepsToAdd = null;
           await this.fetchChallengeLeaderboard();
-
-
         } else {
-
-
           this.errorMessage = "Kunde inte lägga till steg";
           console.error(this.errorMessage);
-
-        }
-      } catch (error) {
-
+        }} catch (error) {
         console.error(error);
         this.errorMessage = error.message;
-
       } finally {
         this.loading = false;
       }
@@ -163,7 +151,7 @@ export default {
             this.challengeDetails.challengeStatus = false;
             this.$emit("statusUpdated")
           } else {
-            console.error("Kunde inte uppdatera  status");
+            console.error("Kunde inte uppdatera status");
           }
         } catch (error) {
           console.error(error);
@@ -172,7 +160,7 @@ export default {
     },
 
     corrImgUrl(imageUrl) {
-      if (!imageUrl || imageUrl === 'null' || imageUrl === '') {
+      if (!imageUrl || imageUrl === "null" || imageUrl === "") {
         return null;
       }
       if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
@@ -184,12 +172,7 @@ export default {
       console.warn("vad är detta för länk??", imageUrl);
       return null;
 
-    },
-
-  },
-
-
-
+    },},
 
   //------------------------- computed--------------------------------------//
 
@@ -209,20 +192,7 @@ export default {
       if (target === 0) return 0;
       return Math.min(Math.round((current / target) * 100), 100);
     }
-
-
-
-  },
-
-
-
-
-}
-
-
-
-
-
+},}
 
 </script>
 
@@ -236,8 +206,8 @@ export default {
     </div>
 
     <div v-else-if="!challengeDetails" class="text-center mt-5">
-      <h2>Utmaning kunde inte laddas</h2>
-      <p>Försök igen senare.</p>
+      <h2>Utmaning kunde inte hittas</h2>
+      <p>Försök igen senare</p>
     </div>
     <div v-else>
       <!-- Sektion ett-->
@@ -246,10 +216,10 @@ export default {
         <div>
 
           <!-- Progress Bar -->
-          <div class="progress-container">
+          <div class="progressContainer">
             <h5>Steg: {{ currentStepsDisplay }} / {{ targetStepsDisplay }}</h5>
             <div class="progress">
-              <div class="progress-bar" :class="{ orange: progressPercentage < 100, green: progressPercentage === 100 }"
+              <div class="progressBar" :class="{ orange: progressPercentage < 100, green: progressPercentage === 100 }"
                 role="progressbar" :style="{ width: progressPercentage + '%' }" :aria-valuenow="progressPercentage"
                 aria-valuemin="0" aria-valuemax="100">
                 {{ progressPercentage }}%
@@ -258,16 +228,18 @@ export default {
           </div>
         </div>
 
-        <div v-if="challengeDetails.challengeStatus === false" class="completion-message">
+        <div v-if="challengeDetails.challengeStatus === false">
           <h3 style="color: darkgreen;">Utmaningen är avklarad!</h3>
         </div>
 
-        <!-- Lägg till steg -->
-        <div class="add-steps-container">
-          <div class="add-steps-form">
-            <input type="number" min="1" class="form-control" aria-label="Addera steg" placeholder="Ange antal steg att lägga till"
-              v-model.number="stepsToAdd" />
-            <button class="btn btn-success mt-2" @click="addSteps">Lägg till steg</button>
+        <!-- Lägg till steg, utgråad om utmaning är avklarad -->
+        <div class="addStepsContainer">
+          <div class="addStepsForm">
+            <input type="number" min="1" class="form-control" aria-label="Addera steg"
+              placeholder="Ange antal steg att lägga till" v-model.number="stepsToAdd"
+              :disabled="challengeDetails.challengeStatus === false" />
+            <button class="btn btn-success mt-2" @click="addSteps"
+              :disabled="challengeDetails.challengeStatus === false">Lägg till steg</button>
           </div>
         </div>
       </div>
@@ -281,16 +253,16 @@ export default {
         </div>
 
         <div v-else>
-          <ul class="member-list">
+          <ul class="memberList">
 
             <li v-for="(entry, index) in leaderboard" :key="entry.userId || index">
-              <div class="member-info">
+              <div class="memberInfo">
 
                 <img v-if="corrImgUrl(entry.user.imageUrl)" :src=corrImgUrl(entry.user.imageUrl) alt="Profil bild"
                   class="profile-image" />
-                <img v-else src="../assets/standardProfile.jpg" alt="Default Profil bild" class="profile-image" />
-                <div class="member-details">
-                  <div class="member-header">
+                <img v-else src="../assets/standardProfile.jpg" alt="Standard profil bild" class="profileImage" />
+                <div>
+                  <div>
                     <strong>
 
                       {{ entry.user.firstName }} {{ entry.user.lastName }}
@@ -300,7 +272,7 @@ export default {
                     </strong>
                   </div>
 
-                  <p class="member-steps">{{ entry.stepsTaken }} steg</p>
+                  <p>{{ entry.stepsTaken }} steg</p>
                 </div>
               </div>
             </li>
@@ -313,12 +285,14 @@ export default {
 
 
 <style scoped>
+
+/* ---------------------------------------------------------------*/
 .forContent {
   margin-top: 10vh;
 }
 
 /* ----------------------- add steps ----------------------------------------*/
-.add-steps-container {
+.addStepsContainer {
   margin: 20px auto;
   text-align: center;
   width: 70%;
@@ -326,13 +300,13 @@ export default {
   margin-top: 5vh;
 }
 
-.add-steps-form {
+.addStepsForm {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.add-steps-form input {
+.addStepsForm input {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
@@ -340,7 +314,7 @@ export default {
   border-radius: 5px;
 }
 
-.add-steps-form button {
+.addStepsForm button {
   width: 100%;
 }
 
@@ -352,7 +326,7 @@ export default {
   text-align: center;
 }
 
-.progress-container {
+.progressContainer {
   margin: 20px auto;
   text-align: center;
   max-width: 80%;
@@ -366,7 +340,7 @@ export default {
   overflow: hidden;
 }
 
-.progress-bar {
+.progressBar {
   height: 100%;
   transition: width 0.5s ease-in-out;
 
@@ -417,7 +391,7 @@ export default {
 
 
 
-.member-info {
+.memberInfo {
   display: flex;
   align-items: center;
   width: 100%;

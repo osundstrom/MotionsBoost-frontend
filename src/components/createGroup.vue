@@ -6,19 +6,19 @@ export default {
     name: "createGroup",
     data() {
         return {
-            groupName: "", 
-            info: "", 
+            groupName: "",
+            info: "",
         };
     },
 
-    
+
     methods: {
 
- //------------------------- createGroup--------------------------------------//
+        //------------------------- createGroup--------------------------------------//
         async createGroup() {
             let errorDiv = document.getElementById("errorDiv");
             const token = sessionStorage.getItem("token");
-            errorDiv.textContent = ""; 
+            errorDiv.textContent = "";
 
             if (!this.groupName) {
                 errorDiv.textContent = "Gruppnamn måste anges.";
@@ -26,7 +26,7 @@ export default {
             }
 
             try {
-                
+
 
                 const response = await fetch(URL, {
                     method: "POST",
@@ -48,21 +48,21 @@ export default {
                     throw new Error(data.message || "Kunde ej skapa gruppen");
                 }
 
-                
+
 
                 console.log("Grupp skapad:", data);
                 alert("Grupp skapad");
 
-                
+
                 if (data.group && data.group._id) {
                     await this.$router.push({ name: 'oneGroup', params: { groupId: data.group._id } });
                 } else {
-                    await this.$router.push("/profil"); 
+                    await this.$router.push("/profil");
                 }
 
             } catch (error) {
                 console.error(error);
-                
+
                 if (errorDiv) {
                     errorDiv.textContent = "Fel vid skapande av grupp: ";
                 }
@@ -81,7 +81,7 @@ export default {
     </div>
 
     <div class="SectionTwo">
-        
+
         <form @submit.prevent="createGroup" class="container-md">
             <!-- Formulär skapa grupp -->
             <div class="mb-3">
@@ -108,34 +108,33 @@ export default {
 
 
 <style scoped>
-
-.SectionOne{
+.SectionOne {
     margin-top: 10vh;
     text-align: center;
     min-height: 10vh;
-    
+
 }
 
 
- form{
-        background-color: #4767f7ad;
-        padding: 2%;
-        border-radius: 10px;
-        margin-top: 2vh;
-        max-width: 90vw;
-        font-size: larger;
-        box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
-        
+form {
+    background-color: #4767f7ad;
+    padding: 2%;
+    border-radius: 10px;
+    margin-top: 2vh;
+    max-width: 90vw;
+    font-size: larger;
+    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
 
-    }
 
-    @media (min-width: 850px) {
-    form { 
+}
+
+@media (min-width: 850px) {
+    form {
         width: 40vw;
     }
 }
-  
-.SectionTwo{
+
+.SectionTwo {
     width: 100%;
     color: white;
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
@@ -143,15 +142,15 @@ export default {
     padding: 2%;
     min-height: 71.5vh;
     box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
-    
+
 }
 
 
 
-  #errorDiv{
+#errorDiv {
     display: flex;
     justify-content: center;
     color: white;
     text-shadow: -1px -1px 0 #ff0000, 1px -1px 0 #ff0000, -1px 1px 0 #ff0000, 1px 1px 0 #ff0000;
-  }
+}
 </style>

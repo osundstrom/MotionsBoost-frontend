@@ -23,10 +23,11 @@ export default {
       const password = document.getElementById("InputPassword").value;
       const file = document.getElementById("InputImage").files[0];
       const gdprCheckbox = document.getElementById("gdprCheckbox").checked;
-      let errorDiv = document.getElementById("errorDiv"); 
-      errorDiv.textContent = ""; 
+      let errorDiv = document.getElementById("errorDiv");
+      errorDiv.textContent = "";
 
-      if (!gdprCheckbox) { // Validera GDPR-kryssrutan
+      //kontrollera gdpr ruta
+      if (!gdprCheckbox) { 
         errorDiv.textContent = "Du måste godkänna GDPR och användarvillkoren för att registrera dig.";
         return;
       }
@@ -44,10 +45,10 @@ export default {
           body: formData,
         })
         if (!response.ok) {
-            const errorData = await response.json();
-            if (errorData && errorData.message) {
-              errorDiv.textContent = errorData.message;
-            }
+          const errorData = await response.json();
+          if (errorData && errorData.message) {
+            errorDiv.textContent = errorData.message;
+          }
           return;
         }
         const data = await response.json();
@@ -55,7 +56,9 @@ export default {
       } catch (error) {
         console.error(error);
         errorDiv.textContent = error.message;
-      }}}
+      }
+    }
+  }
 }
 </script>
 
@@ -104,7 +107,9 @@ export default {
 
       <div class="mb-3 form-check">
         <input type="checkbox" class="form-check-input" id="gdprCheckbox">
-        <label style="text-shadow: none; color: black;" class="form-check-label" for="gdprCheckbox">Jag godkänner hantering av mina uppgifter i enlighet med <a href="https://www.imy.se/verksamhet/dataskydd/det-har-galler-enligt-gdpr/">GDPR</a></label>
+        <label style="text-shadow: none; color: black;" class="form-check-label" for="gdprCheckbox">Jag godkänner
+          hantering av mina uppgifter i enlighet med <a
+            href="https://www.imy.se/verksamhet/dataskydd/det-har-galler-enligt-gdpr/">GDPR</a></label>
       </div>
 
       <div class="d-flex justify-content-between">
@@ -138,21 +143,23 @@ form {
 }
 
 .form-check {
-  a{
+  a {
     color: blue;
     text-decoration: underline;
   }
-  a:hover{
+
+  a:hover {
     color: #000000;
     text-shadow: -1px -1px 0 #ffffff00, 1px -1px 0 #ffffff00, -1px 1px 0 #ffffff00, 1px 1px #ffffff00;
     font-weight: bolder;
   }
-  input{
+
+  input {
     margin-right: 1%;
     cursor: pointer;
   }
-  
-  
+
+
 }
 
 
@@ -175,6 +182,6 @@ button:hover {
   color: rgb(0, 0, 0);
   text-shadow: -1px -1px 0 #f80707, 1px -1px 0 #f80707, -1px 1px 0 #f80707, 1px 1px 0 #f80707;
   font-weight: bolder;
-  
+
 }
 </style>
