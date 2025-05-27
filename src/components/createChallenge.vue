@@ -20,7 +20,7 @@ export default {
     };
   },
   async mounted() {
-    console.log("create MOUNTED - groupId prop:", this.groupId);
+    console.log("groupId", this.groupId);
 
   },
 
@@ -70,8 +70,7 @@ export default {
           throw new Error(data.message);
         }
 
-
-        alert("Utmaning skapad"); //byta ut?
+        //alert("Utmaning skapad"); //byta ut?
 
         this.$router.push({ name: "oneGroup", params: { groupId: this.groupId } });
 

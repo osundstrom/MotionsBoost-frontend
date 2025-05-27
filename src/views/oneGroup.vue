@@ -138,7 +138,16 @@ export default {
       if (window.confirm(`Är du säker på att du vill radera din grupp: "${this.groupDetails?.groupName}"?`)) {
         this.deleteGroup();
       } else {
-        console.log("Radering avbuten");
+        console.log("Avbruten");
+      }
+    },
+
+    //------------------------- Popup lämna grupp --------------------------------------//
+    popupLeaveGroup() {
+      if (window.confirm(`Är du säker på att du vill lämna gruppen: "${this.groupDetails?.groupName}"?`)) {
+        this.leaveGroup();
+      } else {
+        console.log("Avbruten");
       }
     },
 
@@ -175,6 +184,40 @@ export default {
       } catch (error) {
         console.error(error);
         alert("kunde ej radera gruppen, försök igen senare.");
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    //------------------------- Leave Group--------------------------------------//
+    async leaveGroup() {
+      this.loading = true;
+      try {
+        const token = sessionStorage.getItem("token");
+        if (!token) {
+          console.error("Ingen token");
+          alert("ingen token");
+          this.loading = false;
+          return;
+        }
+
+        const response = await fetch(`http://localhost:3000/groups/${this.groupId}/leave`, {
+          method: "DELETE",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          this.$router.push("/profil"); 
+
+        } else {
+          console.error("Kunde inte lämna gruppen:", errorData);
+          alert("Kunde inte lämna gruppen, serverfel");
+        }
+
+      } catch (error) {
+        console.error(error);
       } finally {
         this.loading = false;
       }
@@ -261,6 +304,10 @@ export default {
           <button v-if="groupDetails?.groupRole === 'owner'" @click="popupDeleteGroup" class="btn btn-danger btn-sm"
             title="Radera grupp" style="margin-top: 0.5vw;">
             <i class="fa-solid fa-trash"></i>
+          </button>
+          <button v-if="groupDetails?.groupRole !== 'owner'" @click="popupLeaveGroup" class="btn btn-warning btn-sm"
+            title="Lämna grupp" style="margin-top: 0.5vw; margin-left: 5px;">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i> <!-- Font Awesome leave icon -->
           </button>
         </div>
 
