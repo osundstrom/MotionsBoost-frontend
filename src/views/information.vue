@@ -82,8 +82,6 @@ export default {
 
 .SectionTwo {
     width: 100%;
-    color: rgb(0, 0, 0);
-    
     background-color: #7e9cffab;
     padding: 2%;
     min-height: 40vh;
@@ -112,6 +110,7 @@ export default {
 }
 
 .maillink {
-    color: black;
+    text-decoration: none;
+    color: #000;
 }
 </style>
