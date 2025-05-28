@@ -57,8 +57,10 @@ export default {
         if (response.ok) {
           const data = await response.json();
           this.challengeDetails = data;
+          console.log("details:" + this.challengeDetails.group)
         } else {
           console.error("kunde ej hämta utmaninigens information");
+          
         }
 
       } catch (error) {
@@ -212,6 +214,14 @@ export default {
     <div v-else>
       <!-- Sektion ett-->
       <div class="sectionOne">
+
+        <!-- tillbaka till grupp -->
+        <div class="backbutton">
+            <button @click="this.$router.push(`/group/${this.challengeDetails.group}` )" class="btn btn-secondary btn-sm">
+            <i class="fa-solid fa-arrow-left"></i>
+            </button>
+        </div>
+
         <h1>{{ challengeDetails.challengeName }}</h1>
         <div>
 
@@ -324,6 +334,14 @@ export default {
 .sectionOne {
   min-height: 40vh;
   text-align: center;
+  position: relative;
+}
+
+.backbutton {
+  position: absolute;
+  text-align: left;
+  margin-left: 1vw;
+  
 }
 
 .progressContainer {

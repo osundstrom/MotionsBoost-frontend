@@ -86,7 +86,6 @@ const router = createRouter({
       component: () => import('../views/oneChallenge.vue'),
       props: true,
       beforeEnter: (to, from, next) => {
-
         const token = sessionStorage.getItem("token");
         if (token) {
           next();
@@ -109,6 +108,20 @@ const router = createRouter({
           next();
         } else {
 
+          next("/");
+        }
+      },
+    },
+
+    {
+      path: '/information',
+      name: 'information',
+      component: () => import('../views/information.vue'),
+      beforeEnter: (to, from, next) => {
+        const token = sessionStorage.getItem("token");
+        if (token) {
+          next();
+        } else {
           next("/");
         }
       },

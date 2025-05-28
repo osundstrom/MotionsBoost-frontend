@@ -196,7 +196,7 @@ export default {
         const token = sessionStorage.getItem("token");
         if (!token) {
           console.error("Ingen token");
-          alert("ingen token");
+          alert("Ej autensierad, logga in på nytt");
           this.loading = false;
           return;
         }
@@ -288,15 +288,16 @@ export default {
     <div v-else>
 
 
-
-
-
-
       <!-- Sektion ett-->
       <div class="sectionOne">
 
 
-
+        <!-- tillbaka till profil -->
+        <div class="backbutton">
+          <button @click="this.$router.push('/profil')" class="btn btn-secondary btn-sm">
+            <i class="fa-solid fa-arrow-left"></i> 
+          </button>
+        </div>
 
         <div class="d-flex justify-content-center align-items-center mb-3">
           <h1 class="mb-0 me-3">{{ groupDetails?.groupName }}</h1>
@@ -307,7 +308,7 @@ export default {
           </button>
           <button v-if="groupDetails?.groupRole !== 'owner'" @click="popupLeaveGroup" class="btn btn-warning btn-sm"
             title="Lämna grupp" style="margin-top: 0.5vw; margin-left: 5px;">
-            <i class="fa-solid fa-arrow-right-from-bracket"></i> <!-- Font Awesome leave icon -->
+            <i class="fa-solid fa-arrow-right-from-bracket"></i> 
           </button>
         </div>
 
@@ -348,7 +349,7 @@ export default {
         <ul v-else class="challengeList">
           <li v-for="(challenge, index) in sortDateChallenges" :key="index">
             <h4>
-              <router-link :to="{ name: 'oneChallenge', params: { challengeId: challenge.challengeId } }"
+              <router-link :to="{ name: 'oneChallenge', params: { challengeId: challenge.challengeId, groupId: this.groupId } }"
                 class="challengeLink" @statusUpdated="fetchGroupChallenges">
 
                 <i class="fa-solid"></i>{{ challenge.challengeName }}
@@ -418,7 +419,15 @@ export default {
   min-height: 14vh;
   text-align: center;
   width: 100%;
+  position: relative;
 
+}
+
+.backbutton {
+  position: absolute;
+  text-align: left;
+  margin-left: 1vw;
+  
 }
 
 
