@@ -76,11 +76,18 @@ export default {
       <!-- Formulär inloggning -->
       <div class="mb-3">
         <label for="InputEmail" class="form-label">Epost</label>
-        <input type="email" class="form-control" id="InputEmail" placeholder="Example@example.com">
+        <div class="inputIconDiv">
+          <i class="fa-regular fa-envelope iconForm"></i>
+        <input type="email" class="form-control" id="InputEmail" 
+        placeholder="Example@example.com">
+        </div>
       </div>
       <div class="mb-3">
         <label for="InputPassword" class="form-label">Lösenord</label>
+        <div class="inputIconDiv">
+          <i class="fa-solid fa-lock iconForm"></i>
         <input type="password" class="form-control" id="InputPassword" placeholder="Lösenord">
+        </div>
       </div>
 
       <div class="d-flex justify-content-between">
@@ -132,13 +139,17 @@ form {
 
 
 #fullform {
-  color: white;
-  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-
+  color: rgb(0, 0, 0);
+  /*text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  */
 }
 
 button:hover {
   text-decoration: underline;
+}
+
+button {
+  color: white;
 }
 
 
@@ -149,5 +160,28 @@ button:hover {
   color: white;
   text-shadow: -1px -1px 0 #ff0000, 1px -1px 0 #ff0000, -1px 1px 0 #ff0000, 1px 1px 0 #ff0000;
   font-size: larger;
+}
+
+
+.inputIconDiv {
+  position: relative;
+}
+
+.iconForm {
+  position: absolute;
+  left: 12px; 
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none; 
+  z-index: 3;       
+}
+
+
+#InputEmail.form-control {
+  padding-left: 35px;
+}
+
+#InputPassword.form-control {
+  padding-left: 35px;
 }
 </style>

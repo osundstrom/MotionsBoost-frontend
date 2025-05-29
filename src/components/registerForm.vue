@@ -76,22 +76,29 @@ export default {
 
       <div class="mb-3">
         <label for="inputFirstName" class="form-label">Förnamn</label>
+        <div class="inputIconDiv">
+        <i class="fa-regular fa-user iconForm"></i>
         <input type="firstname" class="form-control" id="InputFirstName" aria-describedby="firstnameHelp"
           placeholder="Förnamn">
-
+          </div>
       </div>
 
       <div class="mb-3">
         <label for="inputLastName" class="form-label">Efternamn</label>
+        <div class="inputIconDiv">
+        <i class="fa-solid fa-user iconForm"></i>
         <input type="lastname" class="form-control" id="InputLastName" aria-describedby="lastnameHelp"
           placeholder="Efternamn">
-
+          </div>
       </div>
 
       <div class="mb-3">
         <label for="InputEmail" class="form-label">Epost</label>
+        <div class="inputIconDiv">
+        <i class="fa-regular fa-envelope iconForm"></i>
         <input type="email" class="form-control" id="InputEmail" aria-describedby="emailHelp"
-          placeholder="name@example.com">
+          placeholder=" name@example.com">
+          </div>
       </div>
 
       <div class="mb-3">
@@ -102,7 +109,11 @@ export default {
 
       <div class="mb-3">
         <label for="InputPassword" class="form-label">Lösenord</label>
-        <input type="password" class="form-control" id="InputPassword" placeholder="Lösenord">
+        <div class="inputIconDiv">
+          <i class="fa-solid fa-lock iconForm"></i>
+        <input type="password" class="form-control" id="InputPassword" 
+        placeholder="Lösenord (8-30 tecken)">
+        </div>
       </div>
 
       <div class="mb-3 form-check">
@@ -164,13 +175,17 @@ form {
 
 
 #fullform {
-  color: white;
-  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-
+  color: rgb(0, 0, 0);
+  /*text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  */
 }
 
 button:hover {
   text-decoration: underline;
+}
+
+button{
+  color: white;
 }
 
 
@@ -184,4 +199,37 @@ button:hover {
   font-weight: bolder;
 
 }
+
+/* ------------stil ikoner----------*/
+.inputIconDiv {
+  position: relative;
+}
+
+.iconForm {
+  position: absolute;
+  left: 12px; 
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none; 
+  z-index: 3;       
+}
+
+
+#InputEmail.form-control {
+  padding-left: 35px;
+}
+
+#InputPassword.form-control {
+  padding-left: 35px;
+}
+
+#InputFirstName.form-control {
+  padding-left: 35px;
+}
+
+#InputLastName.form-control {
+  padding-left: 35px;
+}
+
+
 </style>
