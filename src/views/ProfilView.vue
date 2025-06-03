@@ -4,7 +4,7 @@ import navigation from '../components/navigation.vue'
 
 export default {
   components: { navigation },
-
+//-------------------------data--------------------------------------//
   data() {
     return {
       imageUrl: sessionStorage.getItem("imageUrl"),
@@ -18,6 +18,7 @@ export default {
     };
   },
 
+  //-------------------------computed--------------------------------------//
   computed: {
     corrImgUrl() {
       if (!this.imageUrl || this.imageUrl === "null" || this.imageUrl === "") {
@@ -34,7 +35,7 @@ export default {
     }
   },
 
-
+//-------------------------mounted--------------------------------------//
   async mounted() {
     await this.fetchGroups();
     await this.fetchTotalSteps();

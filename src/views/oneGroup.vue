@@ -15,12 +15,8 @@ export default {
       groupMembers: [],
       ActiveUserId: sessionStorage.getItem("userId"),
       groupChallenges: [],
-
-
     };
   },
-
-
   //------------------------- Mounted--------------------------------------//
   async mounted() {
     console.log("onegroup MOUNTED - groupId:", this.groupId);
